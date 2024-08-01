@@ -1,64 +1,26 @@
 
-using NAudio.Wave;
 using System;
-using System.Numerics;
+using System.IO;
+using System.Text.RegularExpressions;
 
 class Program
 {
     static void Main()
     {
-        string audioFilePath = "path/to/audio/file.wav";
+        // Read the text document
+        string text = File.ReadAllText("textdocument.txt");
 
-        using (var audioFile = new AudioFileReader(audioFilePath))
+        // Define a regular expression for matching email addresses
+        string pattern = @"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b";
+        Regex regex = new Regex(pattern);
+
+        // Find all matches in the text
+        MatchCollection matches = regex.Matches(text);
+
+        // Print out all the email addresses found
+        foreach (Match match in matches)
         {
-            var pitch = DetectPitch(audioFile);
-
-            Console.WriteLine($"The pitch of the audio file is: {pitch} Hz");
+            Console.WriteLine(match.Value);
         }
-    }
-
-    static float DetectPitch(AudioFileReader audioFile)
-    {
-        int bufferSize = 1024;
-        int sampleRate = audioFile.WaveFormat.SampleRate;
-
-        Complex[] fftData = new Complex[bufferSize];
-        float[] audioData = new float[bufferSize];
-
-        int bytesRead;
-        float pitch = 0;
-
-        do
-        {
-            bytesRead = audioFile.Read(audioData, 0, bufferSize);
-
-            if (bytesRead > 0)
-            {
-                for (int i = 0; i < bufferSize; i++)
-                {
-                    fftData[i] = new Complex(audioData[i], 0);
-                }
-
-                FourierTransform.FFT(fftData, FourierTransform.Direction.Forward);
-
-                int maxIndex = 0;
-                float maxValue = 0;
-
-                for (int i = 0; i < bufferSize / 2; i++)
-                {
-                    var magnitude = fftData[i].Magnitude;
-
-                    if (magnitude > maxValue)
-                    {
-                        maxValue = magnitude;
-                        maxIndex = i;
-                    }
-                }
-
-                pitch = maxIndex * sampleRate / bufferSize;
-            }
-        } while (bytesRead > 0);
-
-        return pitch;
     }
 }
