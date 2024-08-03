@@ -1,27 +1,29 @@
 
 using System;
+using System.Xml;
 
 class Program
 {
-    static int Factorial(int num)
-    {
-        if (num == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return num * Factorial(num - 1);
-        }
-    }
-
     static void Main()
     {
-        Console.Write("Enter a number to calculate its factorial: ");
-        int number = Convert.ToInt32(Console.ReadLine());
+        // Load the XML file
+        XmlDocument doc = new XmlDocument();
+        doc.Load("data.xml");
 
-        int result = Factorial(number);
+        // Get a list of all the <person> nodes in the XML
+        XmlNodeList personNodes = doc.SelectNodes("//person");
 
-        Console.WriteLine($"The factorial of {number} is {result}");
+        // Loop through each <person> node
+        foreach (XmlNode personNode in personNodes)
+        {
+            // Extract specific information from the <person> node
+            string name = personNode.SelectSingleNode("name").InnerText;
+            string age = personNode.SelectSingleNode("age").InnerText;
+
+            // Print out the information
+            Console.WriteLine("Name: " + name);
+            Console.WriteLine("Age: " + age);
+            Console.WriteLine();
+        }
     }
 }
