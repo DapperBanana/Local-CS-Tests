@@ -1,55 +1,37 @@
 
 using System;
-using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 
 class Program
 {
-    static List<int> MergeSortedLists(List<int> list1, List<int> list2)
-    {
-        List<int> result = new List<int>();
-        int i = 0;
-        int j = 0;
-
-        while (i < list1.Count && j < list2.Count)
-        {
-            if (list1[i] < list2[j])
-            {
-                result.Add(list1[i]);
-                i++;
-            }
-            else
-            {
-                result.Add(list2[j]);
-                j++;
-            }
-        }
-
-        while (i < list1.Count)
-        {
-            result.Add(list1[i]);
-            i++;
-        }
-
-        while (j < list2.Count)
-        {
-            result.Add(list2[j]);
-            j++;
-        }
-
-        return result;
-    }
-
     static void Main()
     {
-        List<int> list1 = new List<int> { 1, 3, 5, 7, 9 };
-        List<int> list2 = new List<int> { 2, 4, 6, 8, 10 };
+        string jwtString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
-        List<int> sortedList = MergeSortedLists(list1, list2);
+        bool isValidJWT = IsValidJWT(jwtString);
 
-        Console.WriteLine("Merged Sorted List:");
-        foreach (int num in sortedList)
+        if (isValidJWT)
         {
-            Console.WriteLine(num);
+            Console.WriteLine("The given string is a valid JSON Web Token.");
+        }
+        else
+        {
+            Console.WriteLine("The given string is not a valid JSON Web Token.");
+        }
+    }
+
+    static bool IsValidJWT(string jwtString)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadToken(jwtString) as JwtSecurityToken;
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 }
