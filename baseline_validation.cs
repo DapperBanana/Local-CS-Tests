@@ -1,33 +1,21 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-class Fibonacci
+class Program
 {
     static void Main()
     {
-        Console.Write("Enter the number of terms in the Fibonacci sequence: ");
-        int numTerms = Convert.ToInt32(Console.ReadLine());
+        List<int> list1 = new List<int>() { 1, 2, 3, 4, 5 };
+        List<int> list2 = new List<int>() { 3, 4, 5, 6, 7 };
 
-        int first = 0, second = 1, next;
+        var commonElements = list1.Intersect(list2);
 
-        Console.WriteLine("Fibonacci Sequence:");
-
-        for (int i = 0; i < numTerms; i++)
+        Console.WriteLine("Common elements between the two lists:");
+        foreach (var element in commonElements)
         {
-            if (i <= 1)
-            {
-                next = i;
-            }
-            else
-            {
-                next = first + second;
-                first = second;
-                second = next;
-            }
-
-            Console.Write(next + " ");
+            Console.WriteLine(element);
         }
-
-        Console.WriteLine();
     }
 }
