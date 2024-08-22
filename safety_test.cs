@@ -2,52 +2,35 @@
 using System;
 using System.Collections.Generic;
 
-class Program
+class MovieRecommendationSystem
 {
     static void Main()
     {
-        List<int> numbers = new List<int> { 1, 2, 3, 5, 6, 7, 8, 10, 11, 12 };
-
-        List<int> longestSequence = FindLongestConsecutiveSequence(numbers);
-        
-        Console.WriteLine("Longest consecutive sequence:");
-
-        foreach (int num in longestSequence)
+        // Create a dictionary to store movie genres and corresponding movie titles
+        Dictionary<string, List<string>> movieDatabase = new Dictionary<string, List<string>>()
         {
-            Console.Write(num + " ");
-        }
-    }
+            {"Action", new List<string> {"The Dark Knight", "Avengers", "Mad Max: Fury Road"}},
+            {"Comedy", new List<string> {"Superbad", "Bridesmaids", "The Hangover"}},
+            {"Drama", new List<string> {"The Shawshank Redemption", "Forrest Gump", "Gone Girl"}}
+        };
 
-    static List<int> FindLongestConsecutiveSequence(List<int> numbers)
-    {
-        numbers.Sort();
+        // Prompt user to enter their preferred genre
+        Console.WriteLine("Welcome to the Movie Recommendation System!");
+        Console.WriteLine("Please enter your preferred movie genre (Action, Comedy, Drama):");
+        string preferredGenre = Console.ReadLine();
 
-        List<int> longestSequence = new List<int>();
-        List<int> currentSequence = new List<int>();
-
-        for (int i = 0; i < numbers.Count; i++)
+        // Display movie recommendations based on user's preferred genre
+        if (movieDatabase.ContainsKey(preferredGenre))
         {
-            if (i == 0 || numbers[i] == numbers[i - 1] + 1)
+            Console.WriteLine("Here are some movie recommendations for you:");
+            foreach (string movieTitle in movieDatabase[preferredGenre])
             {
-                currentSequence.Add(numbers[i]);
-            }
-            else
-            {
-                if (currentSequence.Count > longestSequence.Count)
-                {
-                    longestSequence = new List<int>(currentSequence);
-                }
-
-                currentSequence.Clear();
-                currentSequence.Add(numbers[i]);
+                Console.WriteLine(movieTitle);
             }
         }
-
-        if (currentSequence.Count > longestSequence.Count)
+        else
         {
-            longestSequence = new List<int>(currentSequence);
+            Console.WriteLine("Sorry, there are no movie recommendations available for the selected genre.");
         }
-
-        return longestSequence;
     }
 }
