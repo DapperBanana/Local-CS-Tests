@@ -5,46 +5,47 @@ class Program
 {
     static void Main()
     {
-        int[,] matrix = {
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9}
-        };
+        int score = 0;
 
-        int rows = matrix.GetLength(0);
-        int cols = matrix.GetLength(1);
-
-        // Reverse the order of rows
-        for (int i = 0; i < rows / 2; i++)
+        Console.WriteLine("Welcome to the Basic Quiz!");
+        Console.WriteLine("Question 1: What is the capital of France?");
+        Console.WriteLine("A. Madrid");
+        Console.WriteLine("B. Paris");
+        Console.WriteLine("C. Rome");
+        Console.WriteLine("D. Berlin");
+        Console.Write("Your answer: ");
+        string answer1 = Console.ReadLine();
+        if (answer1.ToUpper() == "B")
         {
-            for (int j = 0; j < cols; j++)
-            {
-                int temp = matrix[i, j];
-                matrix[i, j] = matrix[rows - 1 - i, j];
-                matrix[rows - 1 - i, j] = temp;
-            }
+            score++;
         }
 
-        // Reverse the order of columns
-        for (int i = 0; i < rows; i++)
+        Console.WriteLine("Question 2: What is the largest mammal in the world?");
+        Console.WriteLine("A. Elephant");
+        Console.WriteLine("B. Blue whale");
+        Console.WriteLine("C. Giraffe");
+        Console.WriteLine("D. Lion");
+        Console.Write("Your answer: ");
+        string answer2 = Console.ReadLine();
+        if (answer2.ToUpper() == "B")
         {
-            for (int j = 0; j < cols / 2; j++)
-            {
-                int temp = matrix[i, j];
-                matrix[i, j] = matrix[i, cols - 1 - j];
-                matrix[i, cols - 1 - j] = temp;
-            }
+            score++;
         }
 
-        // Print the reversed matrix
-        Console.WriteLine("Reversed Matrix:");
-        for (int i = 0; i < rows; i++)
+        Console.WriteLine("Question 3: Who wrote the play 'Romeo and Juliet'?");
+        Console.WriteLine("A. William Shakespeare");
+        Console.WriteLine("B. Charles Dickens");
+        Console.WriteLine("C. Jane Austen");
+        Console.WriteLine("D. Mark Twain");
+        Console.Write("Your answer: ");
+        string answer3 = Console.ReadLine();
+        if (answer3.ToUpper() == "A")
         {
-            for (int j = 0; j < cols; j++)
-            {
-                Console.Write(matrix[i, j] + " ");
-            }
-            Console.WriteLine();
+            score++;
         }
+
+        Console.WriteLine("Quiz completed! Your score is: " + score + "/3");
+
+        Console.ReadLine();
     }
 }
