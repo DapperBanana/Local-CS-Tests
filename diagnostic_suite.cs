@@ -1,28 +1,76 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-class Program
+class Inventory
 {
-    static void Main()
+    private Dictionary<string, int> items;
+
+    public Inventory()
     {
-        List<int> numbers = new List<int> { 8, 2, 5, 7, 3, 9, 1, 4, 6 };
-        numbers.Sort();
+        items = new Dictionary<string, int>();
+    }
 
-        double median;
-
-        if (numbers.Count % 2 == 0)
+    public void AddItem(string itemName, int quantity)
+    {
+        if (items.ContainsKey(itemName))
         {
-            // If the list has an even number of elements, average the middle two
-            median = (numbers[numbers.Count / 2 - 1] + numbers[numbers.Count / 2]) / 2.0;
+            items[itemName] += quantity;
         }
         else
         {
-            // If the list has an odd number of elements, take the middle element
-            median = numbers[numbers.Count / 2];
+            items.Add(itemName, quantity);
         }
+    }
 
-        Console.WriteLine($"The median of the list is: {median}");
+    public void RemoveItem(string itemName, int quantity)
+    {
+        if (items.ContainsKey(itemName))
+        {
+            if (items[itemName] >= quantity)
+            {
+                items[itemName] -= quantity;
+                if (items[itemName] == 0)
+                {
+                    items.Remove(itemName);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not enough quantity of {0} in inventory!", itemName);
+            }
+        }
+        else
+        {
+            Console.WriteLine("{0} not found in inventory!", itemName);
+        }
+    }
+
+    public void DisplayInventory()
+    {
+        Console.WriteLine("Inventory:");
+        foreach (var item in items)
+        {
+            Console.WriteLine("{0}: {1}", item.Key, item.Value);
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Inventory inventory = new Inventory();
+
+        inventory.AddItem("Apples", 10);
+        inventory.AddItem("Bananas", 15);
+        inventory.AddItem("Oranges", 20);
+
+        inventory.DisplayInventory();
+
+        inventory.RemoveItem("Apples", 5);
+        inventory.RemoveItem("Grapes", 5);
+
+        inventory.DisplayInventory();
     }
 }
