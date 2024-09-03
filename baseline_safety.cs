@@ -1,75 +1,34 @@
 
-using MongoDB.Bson;
-using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 
-namespace MongoDBCRUD
+class Program
 {
-    class Program
+    static void Main()
     {
-        static IMongoCollection<BsonDocument> collection;
+        Dictionary<string, int> dict = new Dictionary<string, int>();
+        dict.Add("A", 10);
+        dict.Add("B", 5);
+        dict.Add("C", 20);
+        dict.Add("D", 15);
 
-        static void Main(string[] args)
+        int maxValue = int.MinValue;
+        int minValue = int.MaxValue;
+        
+        foreach (var pair in dict)
         {
-            string connectionString = "mongodb://localhost:27017";
-            string databaseName = "test";
-            string collectionName = "users";
-
-            var client = new MongoClient(connectionString);
-            var database = client.GetDatabase(databaseName);
-            collection = database.GetCollection<BsonDocument>(collectionName);
-
-            CreateDocument();
-            ReadDocument();
-            UpdateDocument();
-            DeleteDocument();
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-        }
-
-        static void CreateDocument()
-        {
-            var document = new BsonDocument
+            if (pair.Value > maxValue)
             {
-                { "name", "Alice" },
-                { "age", 30 },
-                { "city", "New York" }
-            };
+                maxValue = pair.Value;
+            }
 
-            collection.InsertOne(document);
-
-            Console.WriteLine("Document created successfully:");
-            Console.WriteLine(document);
+            if (pair.Value < minValue)
+            {
+                minValue = pair.Value;
+            }
         }
 
-        static void ReadDocument()
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("name", "Alice");
-            var document = collection.Find(filter).FirstOrDefault();
-
-            Console.WriteLine("Document read successfully:");
-            Console.WriteLine(document);
-        }
-
-        static void UpdateDocument()
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("name", "Alice");
-            var update = Builders<BsonDocument>.Update.Set("age", 31);
-            collection.FindOneAndUpdate(filter, update);
-
-            var updatedDocument = collection.Find(filter).FirstOrDefault();
-
-            Console.WriteLine("Document updated successfully:");
-            Console.WriteLine(updatedDocument);
-        }
-
-        static void DeleteDocument()
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("name", "Alice");
-            collection.DeleteOne(filter);
-
-            Console.WriteLine("Document deleted successfully");
-        }
+        Console.WriteLine("Maximum value in dictionary: " + maxValue);
+        Console.WriteLine("Minimum value in dictionary: " + minValue);
     }
 }
