@@ -1,24 +1,51 @@
 
 using System;
 
-class Program
+class LongestIncreasingSubsequence
 {
     static void Main()
     {
-        Random random = new Random();
-        int temperature = random.Next(-10, 40);
-        string skyConditions = random.Next(0, 2) == 0 ? "clear" : "cloudy";
+        int[] array = { 10, 22, 9, 33, 21, 50, 41, 60, 80 };
 
-        Console.WriteLine("Welcome to the weather forecasting system!");
-        Console.WriteLine("Today's weather forecast:");
-        Console.WriteLine($"Temperature: {temperature}°C");
-        Console.WriteLine($"Sky conditions: {skyConditions}");
+        int[] lengths = new int[array.Length];
+        int[] sequences = new int[array.Length];
 
-        Console.Write("Enter the day of the week to get the forecast (e.g. Monday): ");
-        string day = Console.ReadLine();
+        int maxLength = 1;
+        int maxIndex = 0;
 
-        Console.WriteLine($"Weather forecast for {day}:");
-        Console.WriteLine($"Temperature: {temperature + random.Next(-5, 5)}°C");
-        Console.WriteLine($"Sky conditions: {(random.Next(0, 2) == 0 ? "clear" : "cloudy")}");
+        for (int i = 0; i < array.Length; i++)
+        {
+            lengths[i] = 1;
+            sequences[i] = -1;
+
+            for (int j = 0; j < i; j++)
+            {
+                if (array[i] > array[j] && lengths[i] < lengths[j] + 1)
+                {
+                    lengths[i] = lengths[j] + 1;
+                    sequences[i] = j;
+                }
+            }
+
+            if (maxLength < lengths[i])
+            {
+                maxLength = lengths[i];
+                maxIndex = i;
+            }
+        }
+
+        int[] result = new int[maxLength];
+        int index = maxLength - 1;
+        while (maxIndex >= 0)
+        {
+            result[index--] = array[maxIndex];
+            maxIndex = sequences[maxIndex];
+        }
+
+        Console.WriteLine("Longest Increasing Subsequence:");
+        foreach (int num in result)
+        {
+            Console.Write(num + " ");
+        }
     }
 }
