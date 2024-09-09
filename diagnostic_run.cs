@@ -1,46 +1,57 @@
 
 using System;
-using System.IO;
-using System.Linq;
 
-class Program
+class MatrixMultiplication
 {
     static void Main()
     {
-        // Read the data from the CSV file
-        string[] lines = File.ReadAllLines("data.csv");
+        int[,] matrix1 = {
+            {1, 2},
+            {3, 4}
+        };
 
-        // Initialize variables for analysis
-        int totalRows = lines.Length;
-        int totalColumns = lines[0].Split(',').Length;
-        int[] columnTotals = new int[totalColumns];
+        int[,] matrix2 = {
+            {5, 6},
+            {7, 8}
+        };
 
-        // Perform analysis
-        foreach (string line in lines)
+        int[,] result = MultiplyMatrices(matrix1, matrix2);
+
+        Console.WriteLine("Result:");
+        PrintMatrix(result);
+    }
+
+    static int[,] MultiplyMatrices(int[,] matrix1, int[,] matrix2)
+    {
+        int rows1 = matrix1.GetLength(0);
+        int cols1 = matrix1.GetLength(1);
+        int cols2 = matrix2.GetLength(1);
+
+        int[,] result = new int[rows1, cols2];
+
+        for (int i = 0; i < rows1; i++)
         {
-            string[] values = line.Split(',');
-
-            for (int i = 0; i < totalColumns; i++)
+            for (int j = 0; j < cols2; j++)
             {
-                columnTotals[i] += int.Parse(values[i]);
+                for (int k = 0; k < cols1; k++)
+                {
+                    result[i, j] += matrix1[i, k] * matrix2[k, j];
+                }
             }
         }
 
-        // Display analysis results
-        Console.WriteLine($"Total rows: {totalRows}");
-        Console.WriteLine($"Total columns: {totalColumns}");
+        return result;
+    }
 
-        for (int i = 0; i < totalColumns; i++)
+    static void PrintMatrix(int[,] matrix)
+    {
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            Console.WriteLine($"Total for column {i + 1}: {columnTotals[i]}");
-        }
-
-        // Calculate average for each column
-        double[] columnAverages = columnTotals.Select(x => (double)x / totalRows).ToArray();
-
-        for (int i = 0; i < totalColumns; i++)
-        {
-            Console.WriteLine($"Average for column {i + 1}: {columnAverages[i]:N2}");
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine();
         }
     }
 }
