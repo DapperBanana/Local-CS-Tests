@@ -3,37 +3,42 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace RandomImageGenerator
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        Random random = new Random();
+        int width = 500;
+        int height = 500;
+
+        // Create a new bitmap image
+        Bitmap image = new Bitmap(width, height);
+        
+        // Create a Graphics object to draw on the image
+        Graphics graphics = Graphics.FromImage(image);
+
+        // Generate a random color for the background
+        Color backgroundColor = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+
+        // Fill the image with the random background color
+        graphics.Clear(backgroundColor);
+
+        // Generate random shapes and colors on the image
+        for (int i = 0; i < 100; i++)
         {
-            // Create a random number generator
-            Random random = new Random();
-            
-            // Create a new Bitmap object with dimensions 500x500
-            Bitmap bmp = new Bitmap(500, 500);
-            
-            // Get the bitmap's Graphics object
-            Graphics graphics = Graphics.FromImage(bmp);
+            int x = random.Next(width);
+            int y = random.Next(height);
+            int size = random.Next(20, 100);
+            Color shapeColor = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
 
-            // Generate random values for the image
-            int red = random.Next(256);
-            int green = random.Next(256);
-            int blue = random.Next(256);
-
-            // Generate a random color
-            Color color = Color.FromArgb(red, green, blue);
-
-            // Fill the whole image with the random color
-            graphics.FillRectangle(new SolidBrush(color), 0, 0, bmp.Width, bmp.Height);
-
-            // Save the generated image
-            bmp.Save("random_image.jpg", ImageFormat.Jpeg);
-
-            // Display a message to the user
-            Console.WriteLine("Random image generated successfully. Image saved as 'random_image.jpg'");
+            graphics.FillEllipse(new SolidBrush(shapeColor), x, y, size, size);
         }
+
+        // Save the image to a file
+        image.Save("random_image.png", ImageFormat.Png);
+
+        // Clean up resources
+        graphics.Dispose();
+        image.Dispose();
     }
 }
