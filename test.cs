@@ -1,28 +1,28 @@
 
-using HtmlAgilityPack;
 using System;
-using System.Net;
+using System.Drawing;
 
-class WebScraper
+class Program
 {
     static void Main()
     {
-        string url = "https://www.example.com"; // Website URL to scrape
+        // Load the image file
+        Bitmap original = new Bitmap("input.jpg");
 
-        // Download the HTML content of the website
-        HtmlWeb web = new HtmlWeb();
-        HtmlDocument doc = web.Load(url);
-
-        // Extract specific information from the website
-        var title = doc.DocumentNode.SelectSingleNode("//title").InnerText;
-        var paragraphs = doc.DocumentNode.SelectNodes("//p");
-
-        // Display the extracted information
-        Console.WriteLine("Title: " + title);
-        Console.WriteLine("Paragraphs:");
-        foreach (var p in paragraphs)
+        // Convert the image to grayscale
+        Bitmap grayscale = new Bitmap(original.Width, original.Height);
+        for (int x = 0; x < original.Width; x++)
         {
-            Console.WriteLine(p.InnerText);
+            for (int y = 0; y < original.Height; y++)
+            {
+                Color pixel = original.GetPixel(x, y);
+                int grayValue = (int)(pixel.R * 0.3 + pixel.G * 0.59 + pixel.B * 0.11);
+                Color grayPixel = Color.FromArgb(grayValue, grayValue, grayValue);
+                grayscale.SetPixel(x, y, grayPixel);
+            }
         }
+
+        // Save the grayscale image
+        grayscale.Save("output.jpg");
     }
 }
