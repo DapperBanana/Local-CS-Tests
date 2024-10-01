@@ -1,79 +1,30 @@
 
 using System;
-using System.Collections.Generic;
 
-namespace HuffmanCoding
+class BaseConverter
 {
-    class Node
+    // Function to convert a number from one base to another
+    static int ConvertBase(string number, int fromBase, int toBase)
     {
-        public char Symbol { get; set; }
-        public int Frequency { get; set; }
-        public Node LeftChild { get; set; }
-        public Node RightChild { get; set; }
+        int decimalNumber = Convert.ToInt32(number, fromBase);
+        string result = Convert.ToString(decimalNumber, toBase);
+
+        return Int32.Parse(result);
     }
 
-    class HuffmanCoding
+    static void Main()
     {
-        public static void Main(string[] args)
-        {
-            string inputText = "hello world";
-            Dictionary<char, int> frequencyTable = new Dictionary<char, int>();
+        Console.WriteLine("Enter the number to convert: ");
+        string number = Console.ReadLine();
 
-            foreach (char c in inputText)
-            {
-                if (frequencyTable.ContainsKey(c))
-                {
-                    frequencyTable[c]++;
-                }
-                else
-                {
-                    frequencyTable[c] = 1;
-                }
-            }
+        Console.WriteLine("Enter the base of the input number: ");
+        int fromBase = Int32.Parse(Console.ReadLine());
 
-            List<Node> nodes = new List<Node>();
-            foreach (var entry in frequencyTable)
-            {
-                nodes.Add(new Node { Symbol = entry.Key, Frequency = entry.Value });
-            }
+        Console.WriteLine("Enter the base to convert to: ");
+        int toBase = Int32.Parse(Console.ReadLine());
 
-            while (nodes.Count > 1)
-            {
-                nodes.Sort((x, y) => x.Frequency.CompareTo(y.Frequency));
-                Node left = nodes[0];
-                Node right = nodes[1];
-                nodes.Remove(left);
-                nodes.Remove(right);
+        int result = ConvertBase(number, fromBase, toBase);
 
-                Node parent = new Node { Symbol = '\0', Frequency = left.Frequency + right.Frequency, LeftChild = left, RightChild = right };
-                nodes.Add(parent);
-            }
-
-            Node root = nodes[0];
-            Dictionary<char, string> codes = new Dictionary<char, string>();
-            GenerateCodes(root, "", codes);
-
-            string compressed = "";
-            foreach (char c in inputText)
-            {
-                compressed += codes[c];
-            }
-
-            Console.WriteLine("Input Text: " + inputText);
-            Console.WriteLine("Compressed Text: " + compressed);
-        }
-
-        static void GenerateCodes(Node node, string code, Dictionary<char, string> codes)
-        {
-            if (node.Symbol != '\0')
-            {
-                codes[node.Symbol] = code;
-            }
-            else
-            {
-                GenerateCodes(node.LeftChild, code + "0", codes);
-                GenerateCodes(node.RightChild, code + "1", codes);
-            }
-        }
+        Console.WriteLine($"Converted number: {result}");
     }
 }
