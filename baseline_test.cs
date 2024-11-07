@@ -3,35 +3,34 @@ using System;
 
 class Program
 {
-    static void Main()
+    static bool IsPrime(int num)
     {
-        string input = "programming";
+        if (num <= 1) return false;
         
-        if (IsIsogram(input))
+        for (int i = 2; i <= Math.Sqrt(num); i++)
         {
-            Console.WriteLine("The string '{0}' is an isogram.", input);
-        }
-        else
-        {
-            Console.WriteLine("The string '{0}' is not an isogram.", input);
-        }
-    }
-
-    static bool IsIsogram(string input)
-    {
-        input = input.ToLower();
-        
-        for (int i = 0; i < input.Length; i++)
-        {
-            for (int j = i + 1; j < input.Length; j++)
+            if (num % i == 0)
             {
-                if (input[i] == input[j])
-                {
-                    return false;
-                }
+                return false;
             }
         }
-
+        
         return true;
+    }
+
+    static void Main()
+    {
+        Console.Write("Enter a number: ");
+        int num = Convert.ToInt32(Console.ReadLine());
+
+        while (true)
+        {
+            num++;
+            if (IsPrime(num))
+            {
+                Console.WriteLine($"The smallest prime number greater than {num-1} is: {num}");
+                break;
+            }
+        }
     }
 }
