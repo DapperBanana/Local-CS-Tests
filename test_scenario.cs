@@ -1,26 +1,52 @@
 
 using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 class Program
 {
-    static async Task Main()
+    static bool IsPrime(int n)
     {
-        using (HttpClient client = new HttpClient())
-        {
-            client.BaseAddress = new Uri("https://api.example.com/");
-            HttpResponseMessage response = await client.GetAsync("data");
+        if (n <= 1)
+            return false;
 
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(data);
-            }
-            else
-            {
-                Console.WriteLine("Failed to fetch data: " + response.ReasonPhrase);
-            }
+        for (int i = 2; i <= Math.Sqrt(n); i++)
+        {
+            if (n % i == 0)
+                return false;
         }
+
+        return true;
+    }
+
+    static int Napier(int n)
+    {
+        double SqrtFive = Math.Sqrt(5);
+        double Phi = (1 + SqrtFive) / 2;
+        double phi = (1 - SqrtFive) / 2;
+
+        return (int)Math.Round((Math.Pow(Phi, n) - Math.Pow(phi, n)) / SqrtFive);
+    }
+
+    static bool IsLucasCarmichael(int n)
+    {
+        if (!IsPrime(n))
+            return false;
+
+        if (Napier(n) % n == 0)
+            return true;
+        else
+            return false;
+    }
+
+    static void Main()
+    {
+        int num;
+
+        Console.Write("Enter a number to check if it is a Lucas-Carmichael number: ");
+        num = int.Parse(Console.ReadLine());
+
+        if (IsLucasCarmichael(num))
+            Console.WriteLine($"{num} is a Lucas-Carmichael number.");
+        else
+            Console.WriteLine($"{num} is not a Lucas-Carmichael number.");
     }
 }
