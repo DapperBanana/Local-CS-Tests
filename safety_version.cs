@@ -1,30 +1,68 @@
 
 using System;
-using System.Collections.Generic;
 
 class Program
 {
-    static void Main()
+    static bool IsPrime(int n)
     {
-        List<int> numbers = new List<int> { 10, 20, 5, 30, 15 };
+        if (n <= 1) return false;
+        if (n <= 3) return true;
 
-        int max = FindLargestElement(numbers);
+        if (n % 2 == 0 || n % 3 == 0) return false;
 
-        Console.WriteLine("The largest element in the list is: " + max);
+        for (int i = 5; i * i <= n; i += 6)
+        {
+            if (n % i == 0 || n % (i + 2) == 0) return false;
+        }
+
+        return true;
     }
 
-    static int FindLargestElement(List<int> list)
+    static int PowerMod(int a, int b, int mod)
     {
-        int max = int.MinValue;
+        int result = 1;
 
-        foreach (int num in list)
+        while (b > 0)
         {
-            if (num > max)
+            if (b % 2 == 1)
             {
-                max = num;
+                result = (result * a) % mod;
+            }
+
+            a = (a * a) % mod;
+            b /= 2;
+        }
+
+        return result;
+    }
+
+    static bool IsLucasCarmichael(int n)
+    {
+        if (IsPrime(n)) return false;
+
+        for (int a = 2; a < n; a++)
+        {
+            if ((PowerMod(a, n - 1, n) != 1))
+            {
+                return false;
             }
         }
 
-        return max;
+        return true;
+    }
+
+    static void Main()
+    {
+        Console.Write("Enter a number to check if it is a Lucas-Carmichael number: ");
+        int number = Convert.ToInt32(Console.ReadLine());
+
+        if (IsLucasCarmichael(number))
+        {
+            Console.WriteLine("{0} is a Lucas-Carmichael number.", number);
+        }
+        else
+        {
+            Console.WriteLine("{0} is not a Lucas-Carmichael number.", number);
+        }
     }
 }
