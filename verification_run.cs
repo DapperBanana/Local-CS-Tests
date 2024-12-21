@@ -1,39 +1,38 @@
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tweepy;
-using TextBlob;
 
-class Program
+class BinarySearchProgram
 {
+    static int BinarySearch(int[] arr, int x)
+    {
+        int left = 0;
+        int right = arr.Length - 1;
+
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == x)
+                return mid;
+
+            if (arr[mid] < x)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+
+        return -1;
+    }
+
     static void Main()
     {
-        // Authenticate with Twitter API
-        string consumerKey = "YOUR_CONSUMER_KEY";
-        string consumerSecret = "YOUR_CONSUMER_SECRET";
-        string accessToken = "YOUR_ACCESS_TOKEN";
-        string accessTokenSecret = "YOUR_ACCESS_TOKEN_SECRET";
+        int[] arr = { 2, 4, 6, 8, 10, 12, 14, 16, 18};
+        int x = 12;
 
-        OAuthHandler auth = new OAuthHandler(consumerKey, consumerSecret, accessToken, accessTokenSecret);
-        Tweepy.API api = new Tweepy.API(auth);
-
-        // Search for tweets
-        string query = "Microsoft";
-        SearchResult result = api.SearchTweets(query);
-
-        foreach (Status status in result.Statuses)
-        {
-            // Perform sentiment analysis on each tweet
-            string tweetText = status.Text;
-            TextBlob.TextBlob blob = new TextBlob.TextBlob(tweetText);
-            double sentimentScore = blob.Sentiment.Polarity;
-
-            Console.WriteLine("Tweet: {0}", tweetText);
-            Console.WriteLine("Sentiment score: {0}", sentimentScore);
-            Console.WriteLine();
-        }
+        int result = BinarySearch(arr, x);
+        if (result == -1)
+            Console.WriteLine("Element not found");
+        else
+            Console.WriteLine("Element found at index " + result);
     }
 }
