@@ -5,29 +5,31 @@ class Program
 {
     static void Main()
     {
-        Console.Write("Enter first number: ");
-        int num1 = int.Parse(Console.ReadLine());
+        DateTime currentDate = DateTime.Today;
+        int year = currentDate.Year;
+        int month = currentDate.Month;
+        int daysInMonth = DateTime.DaysInMonth(year, month);
+        DateTime firstDayOfMonth = new DateTime(year, month, 1);
+        int startingDay = (int)firstDayOfMonth.DayOfWeek;
 
-        Console.Write("Enter second number: ");
-        int num2 = int.Parse(Console.ReadLine());
+        Console.WriteLine("Current Month: {0}", currentDate.ToString("MMMM yyyy"));
+        Console.WriteLine("Sun Mon Tue Wed Thu Fri Sat");
 
-        int lcm = GetLCM(num1, num2);
-
-        Console.WriteLine($"The LCM of {num1} and {num2} is {lcm}");
-    }
-
-    static int GetLCM(int num1, int num2)
-    {
-        int greater = Math.Max(num1, num2);
-        int lcm = greater;
-
-        while (true)
+        for (int i = 0; i < startingDay; i++)
         {
-            if (lcm % num1 == 0 && lcm % num2 == 0)
-            {
-                return lcm;
-            }
-            lcm += greater;
+            Console.Write("    ");
         }
+
+        for (int day = 1; day <= daysInMonth; day++)
+        {
+            Console.Write(day.ToString().PadLeft(2) + " ");
+
+            if ((day + startingDay) % 7 == 0)
+            {
+                Console.WriteLine();
+            }
+        }
+
+        Console.ReadLine();
     }
 }
