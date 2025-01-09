@@ -1,31 +1,40 @@
 
 using System;
-using System.Diagnostics;
 
-class Program
+class CaesarCipher
 {
     static void Main()
     {
-        string command = "python -c \"from scapy.all import *; packets = sniff(count=5); print(packets)\"";
-        
-        Process process = new Process();
-        ProcessStartInfo startInfo = new ProcessStartInfo
+        string inputText = "Hello, World!";
+        int key = 3;
+
+        string encryptedText = Encrypt(inputText, key);
+        Console.WriteLine("Encrypted text: " + encryptedText);
+
+        string decryptedText = Decrypt(encryptedText, key);
+        Console.WriteLine("Decrypted text: " + decryptedText);
+    }
+
+    static string Encrypt(string text, int key)
+    {
+        string result = "";
+        foreach (char character in text)
         {
-            FileName = "cmd",
-            RedirectStandardInput = true,
-            RedirectStandardOutput = true,
-            UseShellExecute = false
-        };
-        process.StartInfo = startInfo;
-        process.Start();
+            if (char.IsLetter(character))
+            {
+                char shiftedChar = (char)(((char.ToUpper(character) - 'A' + key) % 26) + 'A');
+                result += char.IsLower(character) ? char.ToLower(shiftedChar) : shiftedChar;
+            }
+            else
+            {
+                result += character;
+            }
+        }
+        return result;
+    }
 
-        process.StandardInput.WriteLine(command);
-        process.StandardInput.WriteLine("exit");
-
-        string output = process.StandardOutput.ReadToEnd();
-        Console.WriteLine(output);
-
-        process.WaitForExit();
-        process.Close();
+    static string Decrypt(string text, int key)
+    {
+        return Encrypt(text, 26 - key);
     }
 }
