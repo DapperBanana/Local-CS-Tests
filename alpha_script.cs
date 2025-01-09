@@ -1,21 +1,84 @@
 
 using System;
 
-class Program
+namespace BlackjackGame
 {
-    static void Main()
+    class Program
     {
-        // Get the number of sides and length of each side of the polygon from the user
-        Console.WriteLine("Enter the number of sides of the polygon:");
-        int sides = Convert.ToInt32(Console.ReadLine());
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Blackjack!");
 
-        Console.WriteLine("Enter the length of each side of the polygon:");
-        double sideLength = Convert.ToDouble(Console.ReadLine());
+            Random random = new Random();
+            int playerTotal = 0;
+            int dealerTotal = 0;
 
-        // Calculate the area of the regular polygon
-        double area = (sides * Math.Pow(sideLength, 2)) / (4 * Math.Tan(Math.PI / sides));
+            playerTotal += DrawCard(random, "Player");
+            dealerTotal += DrawCard(random, "Dealer");
 
-        // Display the result
-        Console.WriteLine($"The area of the regular polygon is: {area}");
+            playerTotal += DrawCard(random, "Player");
+            dealerTotal += DrawCard(random, "Dealer");
+
+            bool playerTurn = true;
+            while (playerTurn)
+            {
+                Console.WriteLine("Player total: " + playerTotal);
+                Console.WriteLine("Dealer total: " + dealerTotal);
+
+                Console.WriteLine("Do you want to hit or stand? (h/s)");
+                char choice = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+
+                if (choice == 'h')
+                {
+                    playerTotal += DrawCard(random, "Player");
+                    if (playerTotal > 21)
+                    {
+                        Console.WriteLine("Player busts! Dealer wins.");
+                        return;
+                    }
+                }
+                else if (choice == 's')
+                {
+                    playerTurn = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice. Please try again.");
+                }
+            }
+
+            while (dealerTotal < 17)
+            {
+                dealerTotal += DrawCard(random, "Dealer");
+            }
+
+            Console.WriteLine("Player total: " + playerTotal);
+            Console.WriteLine("Dealer total: " + dealerTotal);
+
+            if (dealerTotal > 21 || playerTotal > dealerTotal)
+            {
+                Console.WriteLine("Player wins!");
+            }
+            else if (dealerTotal > playerTotal)
+            {
+                Console.WriteLine("Dealer wins.");
+            }
+            else
+            {
+                Console.WriteLine("It's a tie!");
+            }
+        }
+
+        static int DrawCard(Random random, string playerName)
+        {
+            int cardValue = random.Next(1, 14);
+            if (cardValue > 10)
+            {
+                cardValue = 10;
+            }
+            Console.WriteLine(playerName + " draws a " + cardValue);
+            return cardValue;
+        }
     }
 }
