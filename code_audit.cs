@@ -1,19 +1,26 @@
 
 using System;
-using System.Globalization;
+using System.IO;
 
 class Program
 {
     static void Main()
     {
-        string input = "hello world";
-        string titleCase = ToTitleCase(input);
-        Console.WriteLine(titleCase);
-    }
+        string filePath = "data.csv";
 
-    static string ToTitleCase(string input)
-    {
-        TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-        return textInfo.ToTitleCase(input);
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                string[] values = line.Split(',');
+
+                foreach (string value in values)
+                {
+                    Console.Write(value + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
