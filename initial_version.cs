@@ -1,27 +1,38 @@
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        string filePath = "data.csv";
-        
-        if (File.Exists(filePath))
-        {
-            string[] lines = File.ReadAllLines(filePath);
+        List<int> numbers = new List<int> { 1, 2, 3, 4, 5 };
 
-            // Analyze data
-            int numLines = lines.Length;
-            int numColumns = lines[0].Split(',').Length;
-            
-            Console.WriteLine($"Number of lines: {numLines}");
-            Console.WriteLine($"Number of columns: {numColumns}");
-        }
-        else
+        Console.WriteLine("Original list:");
+        PrintList(numbers);
+
+        Console.WriteLine("\nSquare of each element:");
+        List<int> squaredNumbers = SquareListElements(numbers);
+        PrintList(squaredNumbers);
+    }
+
+    static List<int> SquareListElements(List<int> list)
+    {
+        List<int> result = new List<int>();
+
+        foreach (int num in list)
         {
-            Console.WriteLine("File not found.");
+            result.Add(num * num);
+        }
+
+        return result;
+    }
+
+    static void PrintList(List<int> list)
+    {
+        foreach (int num in list)
+        {
+            Console.Write(num + " ");
         }
     }
 }
