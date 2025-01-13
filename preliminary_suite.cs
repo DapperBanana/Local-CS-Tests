@@ -1,42 +1,59 @@
 
 using System;
 
-namespace BaseConverter
+namespace FitnessTrackingSystem
 {
     class Program
     {
+        static int steps = 0;
+        static int caloriesBurned = 0;
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter the number to convert: ");
-            string num = Console.ReadLine();
+            bool running = true;
 
-            Console.WriteLine("Enter the base of the number (2 for binary, 10 for decimal): ");
-            int baseFrom = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Welcome to Fitness Tracking System!");
 
-            Console.WriteLine("Enter the base to convert to (2 for binary, 10 for decimal): ");
-            int baseTo = Convert.ToInt32(Console.ReadLine());
+            while (running)
+            {
+                Console.WriteLine("\nChoose an option:");
+                Console.WriteLine("1. Add steps");
+                Console.WriteLine("2. View total steps and calories burned");
+                Console.WriteLine("3. Exit");
 
-            string convertedNum = ConvertBase(num, baseFrom, baseTo);
-            Console.WriteLine($"Converted Number: {convertedNum}");
+                int choice = Convert.ToInt32(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        AddSteps();
+                        break;
+                    case 2:
+                        ViewSummary();
+                        break;
+                    case 3:
+                        running = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+            }
         }
 
-        static string ConvertBase(string num, int baseFrom, int baseTo)
+        static void AddSteps()
         {
-            if (baseFrom == baseTo)
-            {
-                return num;
-            }
+            Console.WriteLine("Enter the number of steps: ");
+            int newSteps = Convert.ToInt32(Console.ReadLine());
+            steps += newSteps;
+            caloriesBurned += newSteps / 20; // Assuming 1 step burns 20 calories
+            Console.WriteLine("Steps added successfully!");
+        }
 
-            if (baseFrom == 2 && baseTo == 10)
-            {
-                return Convert.ToInt32(num, 2).ToString();
-            }
-            else if (baseFrom == 10 && baseTo == 2)
-            {
-                return Convert.ToString(Convert.ToInt32(num), 2);
-            }
-
-            return null;
+        static void ViewSummary()
+        {
+            Console.WriteLine($"Total steps: {steps}");
+            Console.WriteLine($"Total calories burned: {caloriesBurned}");
         }
     }
 }
