@@ -1,34 +1,50 @@
 
 using System;
 
-class Program
+class BaseConverter
 {
     static void Main()
     {
-        int passwordLength;
-        
-        Console.Write("Enter the desired length for the password: ");
-        while (!int.TryParse(Console.ReadLine(), out passwordLength) || passwordLength <= 0)
-        {
-            Console.Write("Invalid input. Please enter a positive integer: ");
-        }
+        Console.WriteLine("Enter the number you want to convert: ");
+        string number = Console.ReadLine();
 
-        string password = GeneratePassword(passwordLength);
-        
-        Console.WriteLine($"Randomly generated password of length {passwordLength}: {password}");
+        Console.WriteLine("Enter the base of the number you entered (2 for binary, 8 for octal, 10 for decimal, 16 for hexadecimal): ");
+        int originalBase = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter the base you want to convert the number to (2, 8, 10, or 16): ");
+        int newBase = int.Parse(Console.ReadLine());
+
+        string result = ConvertBase(number, originalBase, newBase);
+
+        Console.WriteLine($"The number {number} in base {originalBase} is equal to {result} in base {newBase}.");
     }
-    
-    static string GeneratePassword(int length)
+
+    static string ConvertBase(string number, int originalBase, int newBase)
     {
-        string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
-        char[] password = new char[length];
-        Random random = new Random();
+        int base10 = ConvertToBase10(number, originalBase);
 
-        for (int i = 0; i < length; i++)
+        return ConvertFromBase10(base10, newBase);
+    }
+
+    static int ConvertToBase10(string number, int originalBase)
+    {
+        int result = 0;
+        for (int i = 0; i < number.Length; i++)
         {
-            password[i] = validChars[random.Next(validChars.Length)];
+            result += int.Parse(number[i].ToString()) * (int)Math.Pow(originalBase, number.Length - 1 - i);
         }
+        return result;
+    }
 
-        return new string(password);
+    static string ConvertFromBase10(int number, int newBase)
+    {
+        string result = "";
+        while (number > 0)
+        {
+            int remainder = number % newBase;
+            result = remainder + result;
+            number /= newBase;
+        }
+        return result;
     }
 }
