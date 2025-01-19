@@ -5,29 +5,36 @@ class Program
 {
     static void Main()
     {
-        Console.Write("Enter a year: ");
-        int year = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter a string: ");
+        string input = Console.ReadLine();
 
-        if (IsPalindromeYear(year))
+        bool isPalindrome = IsPalindrome(input);
+
+        if(isPalindrome)
         {
-            Console.WriteLine($"{year} is a palindrome year!");
+            Console.WriteLine("The string is a palindrome.");
         }
         else
         {
-            Console.WriteLine($"{year} is not a palindrome year.");
+            Console.WriteLine("The string is not a palindrome.");
         }
     }
 
-    static bool IsPalindromeYear(int year)
+    static bool IsPalindrome(string str)
     {
-        string yearString = year.ToString();
-        string reversedYearString = "";
+        int i = 0;
+        int j = str.Length - 1;
 
-        for (int i = yearString.Length - 1; i >= 0; i--)
+        while(i < j)
         {
-            reversedYearString += yearString[i];
+            if(str[i] != str[j])
+            {
+                return false;
+            }
+            i++;
+            j--;
         }
 
-        return yearString == reversedYearString;
+        return true;
     }
 }
