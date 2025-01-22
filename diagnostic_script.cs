@@ -1,76 +1,37 @@
 
 using System;
+using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to Blackjack!");
+        string str1 = "hello";
+        string str2 = "world";
 
-        Random random = new Random();
-        int playerTotal = 0;
-        int dealerTotal = 0;
-
-        // Player's initial hand
-        int card1 = random.Next(1, 11);
-        int card2 = random.Next(1, 11);
-        playerTotal = card1 + card2;
-        Console.WriteLine($"Your cards: {card1}, {card2}");
-        Console.WriteLine($"Your total: {playerTotal}");
-
-        // Dealer's initial hand
-        int dealerCard1 = random.Next(1, 11);
-        int dealerCard2 = random.Next(1, 11);
-        dealerTotal = dealerCard1 + dealerCard2;
-        Console.WriteLine($"Dealer's cards: {dealerCard1}, ?");
-
-        // Player's turn
-        while (playerTotal < 21)
+        List<char> commonChars = FindCommonCharacters(str1, str2);
+        
+        Console.WriteLine("Common characters between the two strings are:");
+        foreach (char ch in commonChars)
         {
-            Console.Write("Do you want to hit? (y/n): ");
-            string input = Console.ReadLine();
-            if (input == "y")
+            Console.Write(ch + " ");
+        }
+    }
+
+    static List<char> FindCommonCharacters(string str1, string str2)
+    {
+        List<char> commonChars = new List<char>();
+        HashSet<char> set1 = new HashSet<char>(str1);
+        HashSet<char> set2 = new HashSet<char>(str2);
+
+        foreach (char ch in set1)
+        {
+            if (set2.Contains(ch))
             {
-                int newCard = random.Next(1, 11);
-                playerTotal += newCard;
-                Console.WriteLine($"You drew: {newCard}");
-                Console.WriteLine($"Your total: {playerTotal}");
-            }
-            else if (input == "n")
-            {
-                break;
+                commonChars.Add(ch);
             }
         }
 
-        // Dealer's turn
-        Console.WriteLine($"Dealer's second card: {dealerCard2}");
-        while (dealerTotal < 17)
-        {
-            int newCard = random.Next(1, 11);
-            dealerTotal += newCard;
-            Console.WriteLine($"Dealer drew: {newCard}");
-            Console.WriteLine($"Dealer's total: {dealerTotal}");
-        }
-
-        // Display results
-        Console.WriteLine($"Your total: {playerTotal}");
-        Console.WriteLine($"Dealer's total: {dealerTotal}");
-
-        if (playerTotal > 21)
-        {
-            Console.WriteLine("You bust! Dealer wins.");
-        }
-        else if (dealerTotal > 21 || playerTotal > dealerTotal)
-        {
-            Console.WriteLine("You win!");
-        }
-        else if (playerTotal == dealerTotal)
-        {
-            Console.WriteLine("It's a tie!");
-        }
-        else
-        {
-            Console.WriteLine("Dealer wins.");
-        }
+        return commonChars;
     }
 }
