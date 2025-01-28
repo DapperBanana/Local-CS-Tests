@@ -1,28 +1,22 @@
 
 using System;
-using System.Collections.Generic;
+using System.Xml;
 
 class Program
 {
     static void Main()
     {
-        List<int> list1 = new List<int> { 1, 2, 3, 4, 5 };
-        List<int> list2 = new List<int> { 3, 4, 5, 6, 7 };
+        string xmlString = "<note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>";
 
-        List<int> commonElements = new List<int>();
-
-        foreach (int num in list1)
+        try
         {
-            if (list2.Contains(num))
-            {
-                commonElements.Add(num);
-            }
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+            Console.WriteLine("The given string is a valid XML document.");
         }
-
-        Console.WriteLine("Common elements between the two lists are:");
-        foreach (int num in commonElements)
+        catch (XmlException)
         {
-            Console.Write(num + " ");
+            Console.WriteLine("The given string is not a valid XML document.");
         }
     }
 }
