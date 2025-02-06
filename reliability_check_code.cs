@@ -1,40 +1,33 @@
 
-using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        HtmlWeb web = new HtmlWeb();
-        HtmlDocument doc = web.Load("http://example.com");
+        Console.WriteLine("Enter a decimal number:");
+        int decimalNumber = Convert.ToInt32(Console.ReadLine());
 
-        // Find all tables in the HTML document
-        var tables = doc.DocumentNode.SelectNodes("//table");
+        string binaryNumber = ConvertDecimalToBinary(decimalNumber);
+        
+        Console.WriteLine($"Binary equivalent: {binaryNumber}");
+    }
 
-        if (tables != null)
+    static string ConvertDecimalToBinary(int decimalNumber)
+    {
+        if (decimalNumber == 0)
         {
-            foreach (var table in tables)
-            {
-                // Extract data from each table
-                var rows = table.SelectNodes(".//tr");
-
-                if (rows != null)
-                {
-                    foreach (var row in rows)
-                    {
-                        var cells = row.SelectNodes(".//th|.//td");
-
-                        if (cells != null)
-                        {
-                            var data = cells.Select(cell => cell.InnerText.Trim()).ToList();
-                            Console.WriteLine(string.Join(", ", data));
-                        }
-                    }
-                }
-            }
+            return "0";
         }
+
+        string binaryNumber = "";
+        while (decimalNumber > 0)
+        {
+            int remainder = decimalNumber % 2;
+            binaryNumber = remainder + binaryNumber;
+            decimalNumber /= 2;
+        }
+
+        return binaryNumber;
     }
 }
