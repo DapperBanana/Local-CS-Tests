@@ -1,37 +1,29 @@
 
 using System;
+using System.Collections.Generic;
 
-class WeatherForecast
+class Program
 {
     static void Main()
     {
-        Random rnd = new Random();
-        string[] weatherConditions = { "Sunny", "Cloudy", "Rainy", "Snowy" };
-        
-        int randIndex = rnd.Next(weatherConditions.Length);
-        string currentWeather = weatherConditions[randIndex];
-        
-        Console.WriteLine("Today's weather forecast:");
-        Console.WriteLine("=========================");
-        Console.WriteLine("Condition: " + currentWeather);
+        List<int> numbers = new List<int> { 10, 20, 30, 40, 50 };
 
-        switch (currentWeather)
+        int firstLargest = int.MinValue;
+        int secondLargest = int.MinValue;
+
+        foreach (int num in numbers)
         {
-            case "Sunny":
-                Console.WriteLine("Don't forget to bring sunglasses!");
-                break;
-            case "Cloudy":
-                Console.WriteLine("It might rain, so bring an umbrella!");
-                break;
-            case "Rainy":
-                Console.WriteLine("Dress warmly and don't forget your raincoat!");
-                break;
-            case "Snowy":
-                Console.WriteLine("Bundle up and wear snow boots!");
-                break;
-            default:
-                Console.WriteLine("Unknown weather condition.");
-                break;
+            if (num > firstLargest)
+            {
+                secondLargest = firstLargest;
+                firstLargest = num;
+            }
+            else if (num > secondLargest && num != firstLargest)
+            {
+                secondLargest = num;
+            }
         }
+
+        Console.WriteLine("Second largest element in the list is: " + secondLargest);
     }
 }
