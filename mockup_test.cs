@@ -1,56 +1,61 @@
 
 using System;
+using System.Data.SQLite;
 
-class Program
+namespace CRUDSQLite
 {
-    static bool IsPrime(int n)
+    class Program
     {
-        if (n <= 1)
+        static void Main(string[] args)
         {
-            return false;
-        }
-
-        for (int i = 2; i <= Math.Sqrt(n); i++)
-        {
-            if (n % i == 0)
+            string connectionString = "Data Source=database.db;Version=3;";
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
-                return false;
+                connection.Open();
+
+                // Create table
+                string createTableQuery = "CREATE TABLE IF NOT EXISTS Users (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER)";
+                using (SQLiteCommand createTableCommand = new SQLiteCommand(createTableQuery, connection))
+                {
+                    createTableCommand.ExecuteNonQuery();
+                }
+
+                // Insert data
+                string insertQuery = "INSERT INTO Users (Name, Age) VALUES ('Alice', 30)";
+                using (SQLiteCommand insertCommand = new SQLiteCommand(insertQuery, connection))
+                {
+                    insertCommand.ExecuteNonQuery();
+                }
+
+                // Read data
+                string selectQuery = "SELECT * FROM Users";
+                using (SQLiteCommand selectCommand = new SQLiteCommand(selectQuery, connection))
+                {
+                    using (SQLiteDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"Id: {reader["Id"]}, Name: {reader["Name"]}, Age: {reader["Age"]}");
+                        }
+                    }
+                }
+
+                // Update data
+                string updateQuery = "UPDATE Users SET Age = 31 WHERE Name = 'Alice'";
+                using (SQLiteCommand updateCommand = new SQLiteCommand(updateQuery, connection))
+                {
+                    updateCommand.ExecuteNonQuery();
+                }
+
+                // Delete data
+                string deleteQuery = "DELETE FROM Users WHERE Name = 'Alice'";
+                using (SQLiteCommand deleteCommand = new SQLiteCommand(deleteQuery, connection))
+                {
+                    deleteCommand.ExecuteNonQuery();
+                }
+
+                connection.Close();
             }
-        }
-
-        return true;
-    }
-
-    static bool IsLucasCarmichael(int n)
-    {
-        if (!IsPrime(n))
-        {
-            return false;
-        }
-
-        for (int i = 1; i < n; i++)
-        {
-            if ((Math.Pow(i, n - 1) - 1) % n != 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    static void Main()
-    {
-        Console.Write("Enter a number to check if it is a Lucas-Carmichael number: ");
-        int num = Convert.ToInt32(Console.ReadLine());
-
-        if (IsLucasCarmichael(num))
-        {
-            Console.WriteLine(num + " is a Lucas-Carmichael number.");
-        }
-        else
-        {
-            Console.WriteLine(num + " is not a Lucas-Carmichael number.");
         }
     }
 }
