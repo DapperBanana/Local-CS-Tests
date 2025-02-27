@@ -1,21 +1,32 @@
 
 using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        HashSet<int> set1 = new HashSet<int>() { 1, 2, 3, 4, 5 };
-        HashSet<int> set2 = new HashSet<int>() { 4, 5, 6, 7, 8 };
+        // Input the string
+        Console.WriteLine("Enter a string: ");
+        string input = Console.ReadLine();
 
-        HashSet<int> union = new HashSet<int>(set1);
-        union.UnionWith(set2);
+        // Convert the string to title case
+        string titleCase = ToTitleCase(input);
+        Console.WriteLine("String in title case: " + titleCase);
+    }
 
-        Console.WriteLine("Union of Set 1 and Set 2:");
-        foreach (int num in union)
+    static string ToTitleCase(string input)
+    {
+        // Split the input string into words
+        string[] words = input.Split(' ');
+        string result = "";
+
+        // Loop through each word and convert to title case
+        foreach (string word in words)
         {
-            Console.WriteLine(num);
+            result += char.ToUpper(word[0]) + word.Substring(1).ToLower() + " ";
         }
+
+        // Trim any extra spaces and return the result
+        return result.Trim();
     }
 }
