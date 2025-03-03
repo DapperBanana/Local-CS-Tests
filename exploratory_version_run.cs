@@ -1,43 +1,53 @@
 
 using System;
 
-class EditDistanceCalculator
+namespace BasicCalculator
 {
-    public static int CalculateEditDistance(string str1, string str2)
+    class Program
     {
-        int[,] dp = new int[str1.Length + 1, str2.Length + 1];
-
-        for (int i = 0; i <= str1.Length; i++)
+        static void Main(string[] args)
         {
-            for (int j = 0; j <= str2.Length; j++)
+            double num1, num2;
+            string op;
+
+            Console.WriteLine("Welcome to the Basic Calculator!");
+
+            Console.Write("Enter the first number: ");
+            num1 = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("Enter the operation (+, -, *, /): ");
+            op = Console.ReadLine();
+
+            Console.Write("Enter the second number: ");
+            num2 = Convert.ToDouble(Console.ReadLine());
+
+            double result = 0;
+
+            switch (op)
             {
-                if (i == 0)
-                {
-                    dp[i, j] = j;
-                }
-                else if (j == 0)
-                {
-                    dp[i, j] = i;
-                }
-                else if (str1[i - 1] == str2[j - 1])
-                {
-                    dp[i, j] = dp[i - 1, j - 1];
-                }
-                else
-                {
-                    dp[i, j] = 1 + Math.Min(dp[i - 1, j - 1], Math.Min(dp[i - 1, j], dp[i, j - 1]));
-                }
+                case "+":
+                    result = num1 + num2;
+                    break;
+                case "-":
+                    result = num1 - num2;
+                    break;
+                case "*":
+                    result = num1 * num2;
+                    break;
+                case "/":
+                    if (num2 == 0)
+                    {
+                        Console.WriteLine("Error: Division by zero");
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                default:
+                    Console.WriteLine("Invalid operator");
+                    return;
             }
+
+            Console.WriteLine("Result: {0}", result);
         }
-
-        return dp[str1.Length, str2.Length];
-    }
-
-    static void Main()
-    {
-        string str1 = "kitten";
-        string str2 = "sitting";
-
-        Console.WriteLine("The edit distance between '{0}' and '{1}' is: {2}", str1, str2, CalculateEditDistance(str1, str2));
     }
 }
