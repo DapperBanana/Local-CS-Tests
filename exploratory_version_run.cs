@@ -1,53 +1,34 @@
 
 using System;
+using System.IO;
 
-namespace BasicCalculator
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        string filePath = "data.csv";
+
+        if(File.Exists(filePath))
         {
-            double num1, num2;
-            string op;
-
-            Console.WriteLine("Welcome to the Basic Calculator!");
-
-            Console.Write("Enter the first number: ");
-            num1 = Convert.ToDouble(Console.ReadLine());
-
-            Console.Write("Enter the operation (+, -, *, /): ");
-            op = Console.ReadLine();
-
-            Console.Write("Enter the second number: ");
-            num2 = Convert.ToDouble(Console.ReadLine());
-
-            double result = 0;
-
-            switch (op)
+            using (StreamReader reader = new StreamReader(filePath))
             {
-                case "+":
-                    result = num1 + num2;
-                    break;
-                case "-":
-                    result = num1 - num2;
-                    break;
-                case "*":
-                    result = num1 * num2;
-                    break;
-                case "/":
-                    if (num2 == 0)
-                    {
-                        Console.WriteLine("Error: Division by zero");
-                        return;
-                    }
-                    result = num1 / num2;
-                    break;
-                default:
-                    Console.WriteLine("Invalid operator");
-                    return;
-            }
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    string[] values = line.Split(',');
 
-            Console.WriteLine("Result: {0}", result);
+                    foreach (var value in values)
+                    {
+                        Console.Write(value + " ");
+                    }
+
+                    Console.WriteLine();
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("File not found.");
         }
     }
 }
