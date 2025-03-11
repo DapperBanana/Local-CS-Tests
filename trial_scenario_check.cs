@@ -1,27 +1,71 @@
 
 using System;
-using System.IO;
-using System.Text.RegularExpressions;
 
-class Program
+class MatrixOperation
 {
     static void Main()
     {
-        string filePath = "textDocument.txt";
-        string text = File.ReadAllText(filePath);
+        int[,] matrix1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        int[,] matrix2 = { { 9, 8, 7 }, { 6, 5, 4 }, { 3, 2, 1 } };
 
-        // Define a regular expression for email addresses
-        string pattern = @"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})";
+        Console.WriteLine("Matrix 1:");
+        PrintMatrix(matrix1);
 
-        // Find all matches
-        MatchCollection matches = Regex.Matches(text, pattern);
+        Console.WriteLine("Matrix 2:");
+        PrintMatrix(matrix2);
 
-        Console.WriteLine("Email addresses found in the text document:");
+        int[,] sumMatrix = AddMatrix(matrix1, matrix2);
+        Console.WriteLine("Matrix 1 + Matrix 2:");
+        PrintMatrix(sumMatrix);
 
-        // Print each match
-        foreach (Match match in matches)
+        int[,] differenceMatrix = SubtractMatrix(matrix1, matrix2);
+        Console.WriteLine("Matrix 1 - Matrix 2:");
+        PrintMatrix(differenceMatrix);
+    }
+
+    static void PrintMatrix(int[,] matrix)
+    {
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            Console.WriteLine(match.Value);
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine();
         }
+    }
+
+    static int[,] AddMatrix(int[,] matrix1, int[,] matrix2)
+    {
+        int rows = matrix1.GetLength(0);
+        int cols = matrix1.GetLength(1);
+        int[,] result = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                result[i, j] = matrix1[i, j] + matrix2[i, j];
+            }
+        }
+
+        return result;
+    }
+
+    static int[,] SubtractMatrix(int[,] matrix1, int[,] matrix2)
+    {
+        int rows = matrix1.GetLength(0);
+        int cols = matrix1.GetLength(1);
+        int[,] result = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                result[i, j] = matrix1[i, j] - matrix2[i, j];
+            }
+        }
+
+        return result;
     }
 }
