@@ -1,35 +1,18 @@
 
 using System;
 
-class Program
+class TriangleAreaCalculator
 {
     static void Main()
     {
-        Random random = new Random();
-        string[] weatherOptions = { "Sunny", "Cloudy", "Rainy", "Snowy" };
+        Console.WriteLine("Enter the three sides of the triangle:");
+        double side1 = Convert.ToDouble(Console.ReadLine());
+        double side2 = Convert.ToDouble(Console.ReadLine());
+        double side3 = Convert.ToDouble(Console.ReadLine());
 
-        Console.WriteLine("Welcome to the Weather Forecasting System!");
+        double semiperimeter = (side1 + side2 + side3) / 2;
+        double area = Math.Sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - side3));
 
-        while (true)
-        {
-            Console.WriteLine("\nEnter 'forecast' to get the weather forecast or 'exit' to quit:");
-            string input = Console.ReadLine();
-
-            if (input.ToLower() == "forecast")
-            {
-                int randomIndex = random.Next(weatherOptions.Length);
-                string weatherForecast = weatherOptions[randomIndex];
-                Console.WriteLine("The weather forecast for today is: " + weatherForecast);
-            }
-            else if (input.ToLower() == "exit")
-            {
-                Console.WriteLine("Thank you for using the Weather Forecasting System. Goodbye!");
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Please try again.");
-            }
-        }
+        Console.WriteLine($"The area of the triangle is: {area}");
     }
 }
