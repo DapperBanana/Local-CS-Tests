@@ -1,60 +1,49 @@
 
 using System;
 
-namespace BlackjackGame
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        int[,] matrix = {
+            {1, 2, 3},
+            {2, 4, 5},
+            {3, 5, 6}
+        };
+
+        bool isSymmetric = CheckSymmetric(matrix);
+
+        if (isSymmetric)
         {
-            Console.WriteLine("Welcome to Blackjack!");
+            Console.WriteLine("The matrix is symmetric.");
+        }
+        else
+        {
+            Console.WriteLine("The matrix is not symmetric.");
+        }
+    }
 
-            Random random = new Random();
-            int playerTotal = 0;
-            int dealerTotal = random.Next(16, 26);
+    static bool CheckSymmetric(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
 
-            Console.WriteLine("Dealer's card: " + dealerTotal);
+        if (rows != cols)
+        {
+            return false;
+        }
 
-            while (playerTotal <= 21)
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < i; j++)
             {
-                Console.WriteLine("Your total: " + playerTotal);
-
-                Console.Write("Do you want to hit or stand? (h/s): ");
-                string choice = Console.ReadLine();
-
-                if (choice == "h")
+                if (matrix[i, j] != matrix[j, i])
                 {
-                    int card = random.Next(1, 11);
-                    playerTotal += card;
-                    Console.WriteLine("You drew a " + card);
+                    return false;
                 }
-                else if (choice == "s")
-                {
-                    break;
-                }
-
-                if (playerTotal > 21)
-                {
-                    Console.WriteLine("Bust! You went over 21.");
-                    break;
-                }
-            }
-
-            Console.WriteLine("Your total: " + playerTotal);
-            Console.WriteLine("Dealer's total: " + dealerTotal);
-
-            if (playerTotal > 21 || dealerTotal == 21 || (dealerTotal > playerTotal && dealerTotal <= 21)) 
-            {
-                Console.WriteLine("Dealer wins!");
-            }
-            else if (playerTotal == dealerTotal)
-            {
-                Console.WriteLine("It's a tie!");
-            }
-            else
-            {
-                Console.WriteLine("You win!");
             }
         }
+
+        return true;
     }
 }
