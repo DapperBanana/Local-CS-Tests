@@ -1,36 +1,20 @@
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        Dictionary<string, int> dictionary = new Dictionary<string, int>
+        string str1 = "hello";
+        string str2 = "world";
+
+        var commonChars = str1.Intersect(str2);
+
+        Console.WriteLine("Common characters between the two strings:");
+        foreach (char c in commonChars)
         {
-            {"A", 10},
-            {"B", 20},
-            {"C", 5},
-            {"D", 15}
-        };
-
-        int maxValue = int.MinValue;
-        int minValue = int.MaxValue;
-
-        foreach (var pair in dictionary)
-        {
-            if (pair.Value > maxValue)
-            {
-                maxValue = pair.Value;
-            }
-
-            if (pair.Value < minValue)
-            {
-                minValue = pair.Value;
-            }
+            Console.WriteLine(c);
         }
-
-        Console.WriteLine("Maximum value in the dictionary: " + maxValue);
-        Console.WriteLine("Minimum value in the dictionary: " + minValue);
     }
 }
