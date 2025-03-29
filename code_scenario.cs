@@ -1,49 +1,85 @@
 
 using System;
+using System.Collections.Generic;
 
-class Program
+class Graph
 {
-    static void Main()
+    private int V;
+    private List<int>[] adj;
+
+    public Graph(int V)
     {
-        int[,] matrix = {
-            {1, 2, 3},
-            {2, 4, 5},
-            {3, 5, 6}
-        };
-
-        bool isSymmetric = CheckSymmetric(matrix);
-
-        if (isSymmetric)
+        this.V = V;
+        adj = new List<int>[V];
+        for (int i = 0; i < V; i++)
         {
-            Console.WriteLine("The matrix is symmetric.");
-        }
-        else
-        {
-            Console.WriteLine("The matrix is not symmetric.");
+            adj[i] = new List<int>();
         }
     }
 
-    static bool CheckSymmetric(int[,] matrix)
+    public void AddEdge(int v, int w)
     {
-        int rows = matrix.GetLength(0);
-        int cols = matrix.GetLength(1);
+        adj[v].Add(w);
+        adj[w].Add(v);
+    }
 
-        if (rows != cols)
+    private bool IsCyclicUtil(int v, bool[] visited, int parent)
+    {
+        visited[v] = true;
+
+        foreach (int i in adj[v])
+        {
+            if (!visited[i])
+            {
+                if (IsCyclicUtil(i, visited, v))
+                {
+                    return true;
+                }
+            }
+            else if (i != parent)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsTree()
+    {
+        bool[] visited = new bool[V];
+
+        if (IsCyclicUtil(0, visited, -1))
         {
             return false;
         }
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < V; i++)
         {
-            for (int j = 0; j < i; j++)
+            if (!visited[i])
             {
-                if (matrix[i, j] != matrix[j, i])
-                {
-                    return false;
-                }
+                return false;
             }
         }
 
         return true;
+    }
+
+    public static void Main()
+    {
+        Graph graph = new Graph(5);
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(1, 4);
+
+        if (graph.IsTree())
+        {
+            Console.WriteLine("The graph is a tree.");
+        }
+        else
+        {
+            Console.WriteLine("The graph is not a tree.");
+        }
     }
 }
