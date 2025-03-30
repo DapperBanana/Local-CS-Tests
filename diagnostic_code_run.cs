@@ -1,81 +1,26 @@
 
 using System;
 
-class MatrixOperations
+class PrimeFactors
 {
     static void Main()
     {
-        int rows = 3;
-        int columns = 3;
+        Console.WriteLine("Enter a number:");
+        int number = int.Parse(Console.ReadLine());
 
-        int[,] matrix1 = new int[rows, columns] { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
-        int[,] matrix2 = new int[rows, columns] { {9, 8, 7}, {6, 5, 4}, {3, 2, 1} };
-
-        Console.WriteLine("Matrix 1:");
-        PrintMatrix(matrix1);
-
-        Console.WriteLine("\nMatrix 2:");
-        PrintMatrix(matrix2);
-
-        int[,] resultMatrix = AddMatrices(matrix1, matrix2);
-
-        Console.WriteLine("\nResult Matrix (Addition):");
-        PrintMatrix(resultMatrix);
-
-        resultMatrix = SubtractMatrices(matrix1, matrix2);
-
-        Console.WriteLine("\nResult Matrix (Subtraction):");
-        PrintMatrix(resultMatrix);
+        Console.WriteLine($"Prime factors of {number} are:");
+        FindPrimeFactors(number);
     }
 
-    static void PrintMatrix(int[,] matrix)
+    static void FindPrimeFactors(int n)
     {
-        int rows = matrix.GetLength(0);
-        int columns = matrix.GetLength(1);
-
-        for (int i = 0; i < rows; i++)
+        for (int i = 2; i <= n; i++)
         {
-            for (int j = 0; j < columns; j++)
+            while (n % i == 0)
             {
-                Console.Write(matrix[i, j] + "\t");
-            }
-            Console.WriteLine();
-        }
-    }
-
-    static int[,] AddMatrices(int[,] matrix1, int[,] matrix2)
-    {
-        int rows = matrix1.GetLength(0);
-        int columns = matrix1.GetLength(1);
-
-        int[,] resultMatrix = new int[rows, columns];
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                resultMatrix[i, j] = matrix1[i, j] + matrix2[i, j];
+                Console.WriteLine(i);
+                n = n / i;
             }
         }
-
-        return resultMatrix;
-    }
-
-    static int[,] SubtractMatrices(int[,] matrix1, int[,] matrix2)
-    {
-        int rows = matrix1.GetLength(0);
-        int columns = matrix1.GetLength(1);
-
-        int[,] resultMatrix = new int[rows, columns];
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                resultMatrix[i, j] = matrix1[i, j] - matrix2[i, j];
-            }
-        }
-
-        return resultMatrix;
     }
 }
