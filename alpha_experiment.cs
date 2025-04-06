@@ -1,26 +1,29 @@
 
 using System;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        string email = "example@email.com";
+        // input list of numbers
+        double[] numbers = { 7, 3, 1, 5, 9, 2 };
 
-        if (IsValidEmail(email))
+        // sort the array
+        Array.Sort(numbers);
+
+        // calculate the median
+        double median;
+        int mid = numbers.Length / 2;
+        if (numbers.Length % 2 == 0)
         {
-            Console.WriteLine("The email address {0} is valid.", email);
+            median = (numbers[mid - 1] + numbers[mid]) / 2.0;
         }
         else
         {
-            Console.WriteLine("The email address {0} is not valid.", email);
+            median = numbers[mid];
         }
-    }
 
-    static bool IsValidEmail(string email)
-    {
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-        return Regex.IsMatch(email, pattern);
+        Console.WriteLine("Median of the list of numbers is: " + median);
     }
 }
