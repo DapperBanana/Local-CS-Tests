@@ -1,41 +1,28 @@
 
 using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using ZXing;
+using ZXing.Common;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static void Main()
     {
-        using (HttpClient client = new HttpClient())
+        Console.WriteLine("Enter the text for which you want to generate QR code:");
+        string text = Console.ReadLine();
+        
+        BarcodeWriter writer = new BarcodeWriter
         {
-            HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/posts");
-            
-            if (response.IsSuccessStatusCode)
+            Format = BarcodeFormat.QR_CODE,
+            Options = new EncodingOptions
             {
-                string content = await response.Content.ReadAsStringAsync();
-                var posts = JsonConvert.DeserializeObject<Post[]>(content);
-                
-                foreach (var post in posts)
-                {
-                    Console.WriteLine($"Title: {post.Title}");
-                    Console.WriteLine($"Body: {post.Body}");
-                    Console.WriteLine();
-                }
+                Height = 250,
+                Width = 250
             }
-            else
-            {
-                Console.WriteLine("Failed to retrieve data from the API.");
-            }
-        }
-    }
-}
+        };
 
-public class Post
-{
-    public int UserId { get; set; }
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Body { get; set; }
+        var bitmap = writer.Write(text);
+        bitmap.Save("qrcode.png");
+        
+        Console.WriteLine("QR code generated successfully and saved as 'qrcode.png'.");
+    }
 }
