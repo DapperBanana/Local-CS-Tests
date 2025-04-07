@@ -1,30 +1,32 @@
 
 using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        List<int> numbers = new List<int> { 10, 5, 20, 15, 3, 25 };
+        string[] strings = { "flower", "flow", "flight" };
 
-        int largest = FindLargestElement(numbers);
-
-        Console.WriteLine("The largest element in the list is: " + largest);
+        string result = LongestCommonPrefix(strings);
+        
+        Console.WriteLine("Longest common prefix: " + result);
     }
 
-    static int FindLargestElement(List<int> list)
+    static string LongestCommonPrefix(string[] strs)
     {
-        int largest = list[0];
+        if (strs.Length == 0) return "";
+        
+        Array.Sort(strs);
+        
+        string first = strs[0];
+        string last = strs[strs.Length - 1];
 
-        foreach (int num in list)
+        int i = 0;
+        while (i < first.Length && first[i] == last[i])
         {
-            if (num > largest)
-            {
-                largest = num;
-            }
+            i++;
         }
 
-        return largest;
+        return first.Substring(0, i);
     }
 }
