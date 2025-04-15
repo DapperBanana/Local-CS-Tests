@@ -1,23 +1,35 @@
 
 using System;
+using System.Collections.Generic;
 
-class FrustumOfConeAreaCalculator
+class Program
 {
     static void Main()
     {
-        double radius1, radius2, height;
+        string str1 = "hello";
+        string str2 = "world";
 
-        Console.WriteLine("Enter the radius of the bottom base of the frustum: ");
-        radius1 = Convert.ToDouble(Console.ReadLine());
+        List<char> commonChars = FindCommonCharacters(str1, str2);
 
-        Console.WriteLine("Enter the radius of the top base of the frustum: ");
-        radius2 = Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine("Common characters between '{0}' and '{1}':", str1, str2);
+        foreach (char c in commonChars)
+        {
+            Console.WriteLine(c);
+        }
+    }
 
-        Console.WriteLine("Enter the height of the frustum: ");
-        height = Convert.ToDouble(Console.ReadLine());
+    static List<char> FindCommonCharacters(string str1, string str2)
+    {
+        List<char> commonChars = new List<char>();
 
-        double area = Math.PI * (radius1 + radius2) * Math.Sqrt((radius1 - radius2) * (radius1 - radius2) + height * height) + Math.PI * radius1 * radius1 + Math.PI * radius2 * radius2;
+        foreach (char c in str1)
+        {
+            if (str2.Contains(c) && !commonChars.Contains(c))
+            {
+                commonChars.Add(c);
+            }
+        }
 
-        Console.WriteLine("The area of the frustum of the cone is: " + area.ToString("F2"));
+        return commonChars;
     }
 }
