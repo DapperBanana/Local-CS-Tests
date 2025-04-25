@@ -1,36 +1,49 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to Space Explorer!");
-        Console.WriteLine("You are aboard a spaceship embarking on a mission to explore the galaxy.");
+        List<int> numbers = new List<int> { 1, 2, 4, 5, 6, 7, 10, 11, 12, 13, 15 };
 
-        int totalPlanets = 10;
-        int currentPlanet = 1;
+        List<int> longestSequence = FindLongestConsecutiveSequence(numbers);
 
-        while (currentPlanet <= totalPlanets)
+        Console.WriteLine("Longest consecutive sequence:");
+        foreach (var num in longestSequence)
         {
-            Console.WriteLine($"You have arrived at Planet {currentPlanet}.");
-            Console.WriteLine("Do you want to land on this planet? (y/n)");
-            string input = Console.ReadLine();
-
-            if (input.ToLower() == "y")
-            {
-                ExplorePlanet();
-            }
-
-            currentPlanet++;
+            Console.Write(num + " ");
         }
-
-        Console.WriteLine("You have explored all the planets in the galaxy. Mission complete!");
     }
 
-    static void ExplorePlanet()
+    static List<int> FindLongestConsecutiveSequence(List<int> numbers)
     {
-        Console.WriteLine("Exploring the planet...");
-        // Add more exploration tasks here
+        HashSet<int> numSet = new HashSet<int>(numbers);
+        int maxLength = 0;
+        List<int> longestSequence = new List<int>();
+
+        foreach (int num in numbers)
+        {
+            int currentLength = 1;
+            List<int> currentSequence = new List<int> { num };
+
+            int nextNum = num + 1;
+            while (numSet.Contains(nextNum))
+            {
+                currentLength++;
+                currentSequence.Add(nextNum);
+                nextNum++;
+            }
+
+            if (currentLength > maxLength)
+            {
+                maxLength = currentLength;
+                longestSequence = currentSequence;
+            }
+        }
+
+        return longestSequence;
     }
 }
