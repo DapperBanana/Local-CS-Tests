@@ -1,44 +1,27 @@
 
 using System;
+using LibFftw3;
+using LibrosaSharp;
 
-class ISBNValidator
+namespace AudioPitchAnalyzer
 {
-    static void Main()
+    class Program
     {
-        string isbn = "978-3-16-148410-0"; // Replace with the ISBN number you want to validate
-        
-        bool isValid = ValidateISBN(isbn);
-        
-        if (isValid)
+        static void Main(string[] args)
         {
-            Console.WriteLine("The ISBN number {0} is valid.", isbn);
+            string audioFilePath = "path_to_audio_file.wav";
+
+            // Load audio data
+            float[] audioData = Librosa.Load(audioFilePath, out int sampleRate);
+
+            // Compute pitch using librosa
+            float[] pitches = Librosa.Piptrack(audioData, sampleRate);
+
+            // Analyze pitch data
+            foreach (float pitch in pitches)
+            {
+                Console.WriteLine($"Pitch: {pitch}");
+            }
         }
-        else
-        {
-            Console.WriteLine("The ISBN number {0} is invalid.", isbn);
-        }
-    }
-    
-    static bool ValidateISBN(string isbn)
-    {
-        isbn = isbn.Replace("-", "").Replace(" ", ""); // Remove dashes and spaces
-        
-        if (isbn.Length != 13)
-        {
-            return false;
-        }
-        
-        int checkDigit = int.Parse(isbn.Substring(12, 1));
-        int sum = 0;
-        
-        for (int i = 0; i < 12; i++)
-        {
-            sum += int.Parse(isbn.Substring(i, 1)) * (i % 2 == 0 ? 1 : 3);
-        }
-        
-        int remainder = sum % 10;
-        int calculatedCheckDigit = (10 - remainder) % 10;
-        
-        return checkDigit == calculatedCheckDigit;
     }
 }
