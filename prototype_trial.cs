@@ -1,35 +1,41 @@
 
 using System;
-using System.Text.RegularExpressions;
 
 class Program
 {
-    static void Main()
+    static bool IsPrime(int num)
     {
-        string text = "This is a #sample text with #hashtags #programming #csharp";
-
-        var hashtags = ExtractHashtags(text);
-
-        foreach (var hashtag in hashtags)
+        if (num < 2) return false;
+        for (int i = 2; i <= Math.Sqrt(num); i++)
         {
-            Console.WriteLine(hashtag);
+            if (num % i == 0)
+            {
+                return false;
+            }
         }
+        return true;
     }
 
-    static List<string> ExtractHashtags(string text)
+    static int SumOfPrimesInRange(int start, int end)
     {
-        List<string> hashtags = new List<string>();
-
-        string pattern = @"\B#\w+";
-        Regex regex = new Regex(pattern);
-
-        MatchCollection matches = regex.Matches(text);
-
-        foreach (Match match in matches)
+        int sum = 0;
+        for (int i = start; i <= end; i++)
         {
-            hashtags.Add(match.Value);
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
         }
+        return sum;
+    }
 
-        return hashtags;
+    static void Main()
+    {
+        int start = 1;
+        int end = 10;
+
+        int sumOfPrimes = SumOfPrimesInRange(start, end);
+
+        Console.WriteLine($"The sum of prime numbers between {start} and {end} is: {sumOfPrimes}");
     }
 }
