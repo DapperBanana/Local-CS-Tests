@@ -1,17 +1,22 @@
 
 using System;
+using System.Collections.Generic;
 
 class Program
 {
-    static bool IsPrime(int n)
+    static bool IsIsogram(string str)
     {
-        if (n <= 1)
-            return false;
+        HashSet<char> set = new HashSet<char>();
 
-        for (int i = 2; i <= Math.Sqrt(n); i++)
+        foreach (char c in str)
         {
-            if (n % i == 0)
-                return false;
+            if (char.IsLetter(c))
+            {
+                if (!set.Add(char.ToLower(c)))
+                {
+                    return false;
+                }
+            }
         }
 
         return true;
@@ -19,21 +24,15 @@ class Program
 
     static void Main()
     {
-        int startRange = 1;
-        int endRange = 100;
-        int sum = 0;
-
-        Console.WriteLine($"Prime numbers in range {startRange} to {endRange}:");
-
-        for (int i = startRange; i <= endRange; i++)
+        string input = "hello";
+        
+        if (IsIsogram(input))
         {
-            if (IsPrime(i))
-            {
-                Console.Write(i + " ");
-                sum += i;
-            }
+            Console.WriteLine("The given string \"" + input + "\" is an isogram.");
         }
-
-        Console.WriteLine($"\n\nSum of prime numbers in range: {sum}");
+        else
+        {
+            Console.WriteLine("The given string \"" + input + "\" is not an isogram.");
+        }
     }
 }
