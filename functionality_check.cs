@@ -1,45 +1,39 @@
 
 using System;
 
-class EditDistanceCalculator
+class SymmetricMatrix
 {
-    public static int CalculateEditDistance(string str1, string str2)
+    static bool IsSymmetric(int[,] matrix)
     {
-        int[,] dp = new int[str1.Length + 1, str2.Length + 1];
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
 
-        for (int i = 0; i <= str1.Length; i++)
+        if (rows != cols)
+            return false;
+
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j <= str2.Length; j++)
+            for (int j = 0; j < i; j++)
             {
-                if (i == 0)
-                {
-                    dp[i, j] = j;
-                }
-                else if (j == 0)
-                {
-                    dp[i, j] = i;
-                }
-                else if (str1[i - 1] == str2[j - 1])
-                {
-                    dp[i, j] = dp[i - 1, j - 1];
-                }
-                else
-                {
-                    dp[i, j] = 1 + Math.Min(dp[i - 1, j - 1], Math.Min(dp[i - 1, j], dp[i, j - 1]));
-                }
+                if (matrix[i,j] != matrix[j,i])
+                    return false;
             }
         }
 
-        return dp[str1.Length, str2.Length];
+        return true;
     }
 
     static void Main()
     {
-        string str1 = "kitten";
-        string str2 = "sitting";
-        
-        int editDistance = CalculateEditDistance(str1, str2);
+        int[,] matrix = {
+            {1, 2, 3},
+            {2, 4, 5},
+            {3, 5, 6}
+        };
 
-        Console.WriteLine("Edit distance between '{0}' and '{1}' is: {2}", str1, str2, editDistance);
+        if (IsSymmetric(matrix))
+            Console.WriteLine("The matrix is symmetric.");
+        else
+            Console.WriteLine("The matrix is not symmetric.");
     }
 }
