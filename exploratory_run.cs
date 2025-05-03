@@ -1,36 +1,31 @@
 
 using System;
 
-class Program
+class LongestIncreasingSubsequence
 {
     static void Main()
     {
-        Console.WriteLine("Enter a number:");
-        int number = int.Parse(Console.ReadLine());
+        int[] arr = { 10, 22, 9, 33, 21, 50, 41, 60, 80 };
 
-        if (IsNarcissisticNumber(number))
-        {
-            Console.WriteLine(number + " is a narcissistic number.");
-        }
-        else
-        {
-            Console.WriteLine(number + " is not a narcissistic number.");
-        }
-    }
+        int[] lis = new int[arr.Length];
+        int maxLength = 1;
 
-    static bool IsNarcissisticNumber(int number)
-    {
-        int originalNumber = number;
-        int numberOfDigits = (int)Math.Floor(Math.Log10(number) + 1);
-        int sum = 0;
-
-        while (number > 0)
+        for (int i = 0; i < arr.Length; i++)
         {
-            int digit = number % 10;
-            sum += (int)Math.Pow(digit, numberOfDigits);
-            number /= 10;
+            lis[i] = 1;
+            for (int j = 0; j < i; j++)
+            {
+                if (arr[i] > arr[j] && lis[i] < lis[j] + 1)
+                {
+                    lis[i] = lis[j] + 1;
+                    if (lis[i] > maxLength)
+                    {
+                        maxLength = lis[i];
+                    }
+                }
+            }
         }
 
-        return sum == originalNumber;
+        Console.WriteLine("Length of Longest Increasing Subsequence: " + maxLength);
     }
 }
