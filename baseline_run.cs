@@ -1,53 +1,39 @@
 
+using Google.Apis.Analytics.v3;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using System;
 
 class Program
 {
     static void Main()
     {
-        int startRange, endRange;
-
-        Console.Write("Enter the start of the range: ");
-        startRange = int.Parse(Console.ReadLine());
-
-        Console.Write("Enter the end of the range: ");
-        endRange = int.Parse(Console.ReadLine());
-
-        int sum = CalculatePrimeSum(startRange, endRange);
-
-        Console.WriteLine("The sum of all prime numbers in the range {0} to {1} is {2}", startRange, endRange, sum);
-    }
-
-    static bool IsPrime(int num)
-    {
-        if (num <= 1)
+        // Authenticate to the Google Analytics API using a service account
+        var credential = GoogleCredential.FromFile("path/to/credentials.json")
+            .CreateScoped(AnalyticsService.Scope.AnalyticsReadonly);
+        
+        var service = new AnalyticsService(new BaseClientService.Initializer
         {
-            return false;
-        }
+            HttpClientInitializer = credential,
+            ApplicationName = "Analytics API"
+        });
 
-        for (int i = 2; i <= Math.Sqrt(num); i++)
+        // Get data from the Google Analytics API
+        var request = service.Data.Ga.Get("ga:12345678", "7daysAgo", "today", "ga:users,ga:sessions");
+        request.Dimensions = "ga:date";
+        var data = request.Execute();
+
+        // Display the data
+        if (data.Rows != null)
         {
-            if (num % i == 0)
+            foreach (var row in data.Rows)
             {
-                return false;
+                Console.WriteLine($"{row[0]}: Users={row[1]}, Sessions={row[2]}");
             }
         }
-
-        return true;
-    }
-
-    static int CalculatePrimeSum(int start, int end)
-    {
-        int sum = 0;
-
-        for (int i = start; i <= end; i++)
+        else
         {
-            if (IsPrime(i))
-            {
-                sum += i;
-            }
+            Console.WriteLine("No data found.");
         }
-
-        return sum;
     }
 }
