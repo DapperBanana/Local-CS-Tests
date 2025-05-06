@@ -1,23 +1,45 @@
 
 using System;
 
-namespace CylinderVolumeCalculator
+class PalindromeChecker
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        Console.Write("Enter a string: ");
+        string input = Console.ReadLine();
+
+        if (IsPalindrome(input))
         {
-            double radius, height;
-
-            Console.WriteLine("Enter the radius of the cylinder: ");
-            radius = Convert.ToDouble(Console.ReadLine());
-
-            Console.WriteLine("Enter the height of the cylinder: ");
-            height = Convert.ToDouble(Console.ReadLine());
-
-            double volume = Math.PI * Math.Pow(radius, 2) * height;
-
-            Console.WriteLine("The volume of the cylinder is: " + volume);
+            Console.WriteLine("The string is a palindrome.");
         }
+        else
+        {
+            Console.WriteLine("The string is not a palindrome.");
+        }
+    }
+
+    static bool IsPalindrome(string str)
+    {
+        str = str.ToLower();
+        // Remove spaces, punctuation, and special characters
+        string cleanStr = "";
+        foreach (char c in str)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                cleanStr += c;
+            }
+        }
+
+        // Check if the clean string is a palindrome
+        for (int i = 0; i < cleanStr.Length / 2; i++)
+        {
+            if (cleanStr[i] != cleanStr[cleanStr.Length - i - 1])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
