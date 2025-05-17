@@ -1,30 +1,32 @@
 
 using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        List<int> numberList = new List<int> { 10, 30, 15, 50, 25, 40 };
+        Console.WriteLine("Enter a number to calculate its factorial:");
+        int number = int.Parse(Console.ReadLine());
 
-        int largestNumber = FindLargestElement(numberList);
+        long factorial = CalculateFactorial(number);
 
-        Console.WriteLine("The largest element in the list is: " + largestNumber);
+        Console.WriteLine($"The factorial of {number} is: {factorial}");
     }
 
-    static int FindLargestElement(List<int> list)
+    static long CalculateFactorial(int n)
     {
-        int largestNumber = int.MinValue;
-
-        foreach (int num in list)
+        if (n == 0)
         {
-            if (num > largestNumber)
-            {
-                largestNumber = num;
-            }
+            return 1;
         }
-
-        return largestNumber;
+        
+        long result = 1;
+        
+        for (int i = 1; i <= n; i++)
+        {
+            result *= i;
+        }
+        
+        return result;
     }
 }
