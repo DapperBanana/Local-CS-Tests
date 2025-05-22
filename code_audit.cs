@@ -1,29 +1,42 @@
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 
-class Program
+namespace TrafficSimulation
 {
-    static void Main()
+    class Program
     {
-        string imagePath = "example.jpg";
-        
-        using (Image image = Image.FromFile(imagePath))
+        static void Main(string[] args)
         {
-            foreach (PropertyItem propertyItem in image.PropertyItems)
+            int numCars = 5;
+            int roadLength = 10;
+
+            int[] positions = new int[numCars];
+            Random rand = new Random();
+
+            while (true)
             {
-                Console.WriteLine($"ID: {propertyItem.Id}, Type: {propertyItem.Type}, Length: {propertyItem.Len}");
+                Console.Clear();
                 
-                if (propertyItem.Type == 2) // ASCII string
+                for (int i = 0; i < numCars; i++)
                 {
-                    string value = System.Text.Encoding.UTF8.GetString(propertyItem.Value);
-                    Console.WriteLine($"Value: {value}");
+                    positions[i] += rand.Next(0, 3);
+                    
+                    if (positions[i] >= roadLength)
+                    {
+                        positions[i] = 0;
+                    }
                 }
-                else
+
+                for (int i = 0; i < numCars; i++)
                 {
-                    Console.WriteLine("Value: " + BitConverter.ToString(propertyItem.Value));
+                    string road = new string('-', roadLength);
+                    char[] roadArray = road.ToCharArray();
+                    roadArray[positions[i]] = 'C';
+                    Console.WriteLine(new string(roadArray));
                 }
+
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
             }
         }
     }
