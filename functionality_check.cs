@@ -1,36 +1,24 @@
 
 using System;
-using System.IO;
 
-class Program
+class Chatbot
 {
     static void Main()
     {
-        string filePath = "data.csv";
+        Console.WriteLine("Hello! I'm Chatbot. What's your name?");
+        string name = Console.ReadLine();
 
-        try
+        Console.WriteLine($"Nice to meet you, {name}! How can I help you today?");
+        string input = Console.ReadLine();
+
+        while (input.ToLower() != "bye")
         {
-            using (var reader = new StreamReader(filePath))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] values = line.Split(',');
-                    
-                    // Perform analysis on data
-                    // For example, calculate the sum of a column
-                    int sum = 0;
-                    foreach (string value in values)
-                    {
-                        sum += Convert.ToInt32(value);
-                    }
-                    Console.WriteLine("Sum of values: " + sum);
-                }
-            }
+            Console.WriteLine($"You said: {input}");
+            Console.WriteLine("Sorry, I'm just a basic chatbot. I don't understand much.");
+            Console.WriteLine("How can I help you today?");
+            input = Console.ReadLine();
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("An error occurred: " + ex.Message);
-        }
+
+        Console.WriteLine("Goodbye! Feel free to chat with me again.");
     }
 }
