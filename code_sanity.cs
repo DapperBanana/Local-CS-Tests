@@ -1,47 +1,64 @@
 
 using System;
-using System.Collections.Generic;
 
-class Program
+class HangmanGame
 {
     static void Main()
     {
-        // Create a dictionary
-        Dictionary<string, int> myDict = new Dictionary<string, int>
-        {
-            {"Apple", 100},
-            {"Banana", 50},
-            {"Cherry", 75},
-            {"Orange", 200}
-        };
+        string secretWord = "hangman";
+        string currentGuess = "";
+        string guessedLetters = "";
+        int attempts = 6;
 
-        // Find the maximum value
-        int maxValue = int.MinValue;
-        string maxKey = "";
-        foreach (var pair in myDict)
+        while (attempts > 0)
         {
-            if (pair.Value > maxValue)
+            Console.WriteLine($"Attempts left: {attempts}");
+            Console.WriteLine("Guessed letters: " + guessedLetters);
+            Console.WriteLine("Current word: " + DisplayWord(secretWord, guessedLetters));
+
+            Console.Write("Enter a letter: ");
+            char input = Console.ReadLine()[0];
+
+            if (guessedLetters.Contains(input))
             {
-                maxValue = pair.Value;
-                maxKey = pair.Key;
+                Console.WriteLine("You've already guessed that letter!");
+                continue;
+            }
+
+            guessedLetters += input;
+
+            if (!secretWord.Contains(input))
+            {
+                attempts--;
+            }
+
+            if (DisplayWord(secretWord, guessedLetters) == secretWord)
+            {
+                Console.WriteLine($"Congratulations! You've guessed the word \"{secretWord}\"!");
+                break;
             }
         }
 
-        // Find the minimum value
-        int minValue = int.MaxValue;
-        string minKey = "";
-        foreach (var pair in myDict)
+        if (attempts == 0)
         {
-            if (pair.Value < minValue)
+            Console.WriteLine("You're out of attempts! The word was \"" + secretWord + "\"");
+        }
+    }
+
+    static string DisplayWord(string secretWord, string guessedLetters)
+    {
+        string display = "";
+        foreach (char letter in secretWord)
+        {
+            if (guessedLetters.Contains(letter))
             {
-                minValue = pair.Value;
-                minKey = pair.Key;
+                display += letter;
+            }
+            else
+            {
+                display += "_";
             }
         }
-
-        // Display the results
-        Console.WriteLine($"Maximum value: {maxValue} (Key: {maxKey})");
-        Console.WriteLine($"Minimum value: {minValue} (Key: {minKey})");
+        return display;
     }
 }
-
