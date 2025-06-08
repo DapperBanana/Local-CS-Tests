@@ -1,44 +1,35 @@
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Python.Runtime;
 
-namespace RandomImageGenerator
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        Random rand = new Random();
+        string[] choices = { "rock", "paper", "scissors" };
+
+        // Computer's choice
+        int computerChoice = rand.Next(0, 3);
+        string computerSelection = choices[computerChoice];
+
+        // Player's choice
+        Console.WriteLine("Choose rock, paper, or scissors:");
+        string playerSelection = Console.ReadLine().ToLower();
+
+        // Determine winner
+        if (playerSelection == computerSelection)
         {
-            using (Py.GIL())
-            {
-                dynamic pillow = Py.Import("PIL.Image");
-
-                Random random = new Random();
-                int width = 200;
-                int height = 200;
-
-                dynamic image = pillow.new("RGB", new PyTuple(new List<int> { width, height }));
-
-                byte[] pixel = new byte[3];
-
-                for (int y = 0; y < height; y++)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            pixel[i] = (byte)random.Next(256);
-                        }
-
-                        image.putpixel(new PyTuple(new List<int> { x, y }), new PyTuple(pixel));
-                    }
-                }
-
-                image.show();
-            }
+            Console.WriteLine("It's a tie! You both chose " + computerSelection + ".");
+        }
+        else if ((playerSelection == "rock" && computerSelection == "scissors") || 
+                 (playerSelection == "paper" && computerSelection == "rock") || 
+                 (playerSelection == "scissors" && computerSelection == "paper"))
+        {
+            Console.WriteLine("You win! Computer chose " + computerSelection + ".");
+        }
+        else
+        {
+            Console.WriteLine("You lose! Computer chose " + computerSelection + ".");
         }
     }
 }
