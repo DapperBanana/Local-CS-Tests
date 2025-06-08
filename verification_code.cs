@@ -1,35 +1,46 @@
 
 using System;
 
-class Program
+class Calculator
 {
     static void Main()
     {
-        Random rand = new Random();
-        string[] choices = { "rock", "paper", "scissors" };
+        Console.WriteLine("Basic Calculator");
+        Console.WriteLine("Enter the first number:");
+        double num1 = Convert.ToDouble(Console.ReadLine());
 
-        // Computer's choice
-        int computerChoice = rand.Next(0, 3);
-        string computerSelection = choices[computerChoice];
+        Console.WriteLine("Enter the second number:");
+        double num2 = Convert.ToDouble(Console.ReadLine());
 
-        // Player's choice
-        Console.WriteLine("Choose rock, paper, or scissors:");
-        string playerSelection = Console.ReadLine().ToLower();
+        Console.WriteLine("Enter the operator (+, -, *, /):");
+        char op = Convert.ToChar(Console.ReadLine());
 
-        // Determine winner
-        if (playerSelection == computerSelection)
+        double result = 0;
+
+        switch (op)
         {
-            Console.WriteLine("It's a tie! You both chose " + computerSelection + ".");
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                if (num2 == 0)
+                {
+                    Console.WriteLine("Error: Division by zero");
+                    return;
+                }
+                result = num1 / num2;
+                break;
+            default:
+                Console.WriteLine("Invalid operator");
+                return;
         }
-        else if ((playerSelection == "rock" && computerSelection == "scissors") || 
-                 (playerSelection == "paper" && computerSelection == "rock") || 
-                 (playerSelection == "scissors" && computerSelection == "paper"))
-        {
-            Console.WriteLine("You win! Computer chose " + computerSelection + ".");
-        }
-        else
-        {
-            Console.WriteLine("You lose! Computer chose " + computerSelection + ".");
-        }
+
+        Console.WriteLine($"Result: {result}");
     }
 }
