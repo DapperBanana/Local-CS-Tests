@@ -1,27 +1,25 @@
 
 using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 class Program
 {
     static void Main()
     {
-        string filePath = @"sample.json";
-
-        if (File.Exists(filePath))
+        string imagePath = "image.jpg";
+        
+        using (Image image = Image.FromFile(imagePath))
         {
-            string json = File.ReadAllText(filePath);
-            JObject jsonObject = JObject.Parse(json);
-
-            foreach (var pair in jsonObject)
+            foreach (PropertyItem propertyItem in image.PropertyItems)
             {
-                Console.WriteLine($"{pair.Key}: {pair.Value}");
+                int id = propertyItem.Id;
+                int type = propertyItem.Type;
+                byte[] value = propertyItem.Value;
+                Console.WriteLine($"Property ID: {id}");
+                Console.WriteLine($"Type: {type}");
+                Console.WriteLine($"Value: {BitConverter.ToString(value)}");
             }
-        }
-        else
-        {
-            Console.WriteLine("File not found.");
         }
     }
 }
