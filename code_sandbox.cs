@@ -1,54 +1,93 @@
 
 using System;
+using System.Collections.Generic;
 
-class FitnessTracker
+class Graph
+{
+    private int V; // Number of vertices
+    private List<List<int>> adj; // Adjacency list
+
+    public Graph(int v)
+    {
+        V = v;
+        adj = new List<List<int>>();
+        for(int i = 0; i < V; i++)
+        {
+            adj.Add(new List<int>());
+        }
+    }
+
+    // Function to add an edge to the graph
+    public void AddEdge(int v, int w)
+    {
+        adj[v].Add(w);
+        adj[w].Add(v);
+    }
+
+    // Function to check if the graph is tree
+    public bool IsTree()
+    {
+        // Array to keep track of visited vertices
+        bool[] visited = new bool[V];
+
+        // Check if the graph has cycles
+        if(IsCyclic(0, -1, visited))
+        {
+            return false;
+        }
+
+        // Check if all vertices are connected
+        for(int i = 0; i < V; i++)
+        {
+            if(!visited[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool IsCyclic(int u, int parent, bool[] visited)
+    {
+        visited[u] = true;
+
+        foreach(int v in adj[u])
+        {
+            if(!visited[v])
+            {
+                if(IsCyclic(v, u, visited))
+                {
+                    return true;
+                }
+            }
+            else if(v != parent)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+class Program
 {
     static void Main()
     {
-        int totalSteps = 0;
-        int totalCalories = 0;
-        int totalDistance = 0;
+        Graph g = new Graph(5);
+        g.AddEdge(0, 1);
+        g.AddEdge(0, 2);
+        g.AddEdge(1, 3);
+        g.AddEdge(3, 4);
 
-        while (true)
+        if(g.IsTree())
         {
-            Console.WriteLine("Fitness Tracker Menu:");
-            Console.WriteLine("1. Add steps");
-            Console.WriteLine("2. Add calories burned");
-            Console.WriteLine("3. Add distance traveled");
-            Console.WriteLine("4. View totals");
-            Console.WriteLine("5. Exit");
-
-            int choice = int.Parse(Console.ReadLine());
-
-            switch (choice)
-            {
-                case 1:
-                    Console.Write("Enter the number of steps: ");
-                    int steps = int.Parse(Console.ReadLine());
-                    totalSteps += steps;
-                    break;
-                case 2:
-                    Console.Write("Enter the number of calories burned: ");
-                    int calories = int.Parse(Console.ReadLine());
-                    totalCalories += calories;
-                    break;
-                case 3:
-                    Console.Write("Enter the distance traveled (in miles): ");
-                    int distance = int.Parse(Console.ReadLine());
-                    totalDistance += distance;
-                    break;
-                case 4:
-                    Console.WriteLine("Total Steps: " + totalSteps);
-                    Console.WriteLine("Total Calories Burned: " + totalCalories);
-                    Console.WriteLine("Total Distance Traveled: " + totalDistance + " miles");
-                    break;
-                case 5:
-                    Console.WriteLine("Exiting program...");
-                    return;
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
-            }
+            Console.WriteLine("The graph is a tree.");
+        }
+        else
+        {
+            Console.WriteLine("The graph is not a tree.");
         }
     }
 }
