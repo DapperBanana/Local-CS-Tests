@@ -1,33 +1,55 @@
 
 using System;
+using System.Diagnostics;
+using System.IO;
 
-class Chatbot
+namespace CsvFilePlotter
 {
-    static void Main()
+    class Program
     {
-        Console.WriteLine("Hello! I am your chatbot. What can I help you with today?");
-
-        while (true)
+        static void Main(string[] args)
         {
-            Console.Write("You: ");
-            string input = Console.ReadLine();
+            string fileName = "data.csv";
+            string pythonScript = "plot.py";
 
-            if (input.ToLower() == "hello")
+            // Read data from CSV file
+            string[] lines = File.ReadAllLines(fileName);
+
+            // Generate Python script to plot data
+            using (StreamWriter sw = File.CreateText(pythonScript))
             {
-                Console.WriteLine("Chatbot: Hello! How are you today?");
+                sw.WriteLine("import matplotlib.pyplot as plt");
+                sw.WriteLine("import numpy as np");
+                sw.WriteLine("data = [");
+
+                foreach (string line in lines)
+                {
+                    string[] values = line.Split(',');
+                    sw.WriteLine($"{values[1]},");
+                }
+
+                sw.WriteLine("]");
+                sw.WriteLine("plt.bar(np.arange(len(data)), data)");
+                sw.WriteLine("plt.show()");
             }
-            else if (input.ToLower() == "what is your name?")
+
+            // Execute the Python script
+            ProcessStartInfo start = new ProcessStartInfo
             {
-                Console.WriteLine("Chatbot: My name is Chatbot. Nice to meet you!");
-            }
-            else if (input.ToLower() == "exit")
+                FileName = "python",
+                Arguments = pythonScript,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(start))
             {
-                Console.WriteLine("Chatbot: Goodbye! Have a great day.");
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Chatbot: I'm sorry, I didn't understand that. Can you please repeat?");
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    Console.Write(result);
+                }
             }
         }
     }
