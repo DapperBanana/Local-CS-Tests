@@ -3,62 +3,88 @@ using System;
 
 class Program
 {
-    static bool IsValidCreditCardNumber(string creditCardNumber)
+    static bool IsPrime(int n)
     {
-        // Remove any non-digit characters from the input string
-        string cleanedNumber = "";
-        foreach (char c in creditCardNumber)
-        {
-            if (char.IsDigit(c))
-            {
-                cleanedNumber += c;
-            }
-        }
-
-        // Check if the input string is of valid length (between 13 and 16 digits)
-        if (cleanedNumber.Length < 13 || cleanedNumber.Length > 16)
-        {
+        if (n <= 1) 
             return false;
-        }
-
-        // Perform Luhn algorithm to validate the credit card number
-        int sum = 0;
-        bool isSecondDigit = false;
-        for (int i = cleanedNumber.Length - 1; i >= 0; i--)
+        
+        for (int i = 2; i <= Math.Sqrt(n); i++)
         {
-            int digit = cleanedNumber[i] - '0';
-
-            if (isSecondDigit)
-            {
-                digit *= 2;
-
-                if (digit > 9)
-                {
-                    digit = digit / 10 + digit % 10;
-                }
-            }
-
-            sum += digit;
-            isSecondDigit = !isSecondDigit;
+            if(n % i == 0)
+                return false;
         }
+        
+        return true;
+    }
 
-        return sum % 10 == 0;
+    static int PowMod(int x, int y, int m)
+    {
+        int res = 1;
+        x = x % m;
+        
+        while (y > 0)
+        {
+            if (y % 2 == 1)
+                res = (res * x) % m;
+
+            y = y >> 1; 
+            x = (x * x) % m;
+        }
+        
+        return res;
+    }
+
+    static bool IsLucasPseudoprime(int n)
+    {
+        if (n <= 1)
+            return false;
+        
+        if (!IsPrime(n))
+            return false;
+        
+        int d = 5;
+        int d2 = 4;
+        
+        while(true)
+        {
+            int a = d2 * d2;
+            int b = d * d;
+            
+            if (a > n)
+                break;
+                
+            if (PowMod(b - 4, n - 1, n) == 0 || PowMod(b + 4, n - 1, n) == 0)
+                return true;
+            
+            d += 1;
+            d2 += 1;
+        }
+        
+        return false;
+    }
+
+    static bool IsCarmichael(int n)
+    {
+        if (IsPrime(n))
+            return false;
+        
+        for (int a = 2; a < n; a++)
+        {
+            if (PowMod(a, n, n) != a)
+                return false;
+        }
+        
+        return true;
     }
 
     static void Main()
     {
-        // Input credit card number
-        Console.Write("Enter a credit card number: ");
-        string creditCardNumber = Console.ReadLine();
-
-        // Check if the credit card number is valid
-        if (IsValidCreditCardNumber(creditCardNumber))
-        {
-            Console.WriteLine("Valid credit card number.");
-        }
+        Console.Write("Enter a number to check if it is a Lucas-Carmichael number: ");
+        int num = Convert.ToInt32(Console.ReadLine());
+        
+        if (IsCarmichael(num) && IsLucasPseudoprime(num))
+            Console.WriteLine($"{num} is a Lucas-Carmichael number.");
         else
-        {
-            Console.WriteLine("Invalid credit card number.");
-        }
+            Console.WriteLine($"{num} is not a Lucas-Carmichael number.");
     }
 }
