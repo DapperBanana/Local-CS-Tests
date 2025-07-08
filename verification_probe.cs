@@ -1,60 +1,61 @@
 
 using System;
+using System.Collections.Generic;
 
-class Program
+class InventoryManagementSystem
 {
-    static string LongestCommonSubsequence(string str1, string str2)
+    static Dictionary<string, int> inventory = new Dictionary<string, int>();
+
+    static void AddItemToInventory(string item, int quantity)
     {
-        int[,] dp = new int[str1.Length + 1, str2.Length + 1];
-
-        for (int i = 1; i <= str1.Length; i++)
+        if(inventory.ContainsKey(item))
         {
-            for (int j = 1; j <= str2.Length; j++)
-            {
-                if (str1[i - 1] == str2[j - 1])
-                {
-                    dp[i, j] = dp[i - 1, j - 1] + 1;
-                }
-                else
-                {
-                    dp[i, j] = Math.Max(dp[i - 1, j], dp[i, j - 1]);
-                }
-            }
+            inventory[item] += quantity;
         }
-
-        int length = dp[str1.Length, str2.Length];
-        char[] lcs = new char[length];
-
-        int m = str1.Length, n = str2.Length;
-        while (m > 0 && n > 0)
+        else
         {
-            if (str1[m - 1] == str2[n - 1])
+            inventory.Add(item, quantity);
+        }
+    }
+
+    static void RemoveItemFromInventory(string item, int quantity)
+    {
+        if(inventory.ContainsKey(item))
+        {
+            if(inventory[item] >= quantity)
             {
-                lcs[length - 1] = str1[m - 1];
-                m--;
-                n--;
-                length--;
-            }
-            else if (dp[m - 1, n] > dp[m, n - 1])
-            {
-                m--;
+                inventory[item] -= quantity;
             }
             else
             {
-                n--;
+                Console.WriteLine("Not enough quantity in inventory.");
             }
         }
-
-        return new string(lcs);
+        else
+        {
+            Console.WriteLine("Item not found in inventory.");
+        }
     }
 
-    static void Main()
+    static void DisplayInventory()
     {
-        string str1 = "ABCDGH";
-        string str2 = "AEDFHR";
+        Console.WriteLine("Inventory:");
+        foreach(var item in inventory)
+        {
+            Console.WriteLine($"Item: {item.Key}, Quantity: {item.Value}");
+        }
+    }
 
-        string lcs = LongestCommonSubsequence(str1, str2);
+    static void Main(string[] args)
+    {
+        AddItemToInventory("Apple", 10);
+        AddItemToInventory("Banana", 5);
 
-        Console.WriteLine("Longest Common Subsequence: " + lcs);
+        DisplayInventory();
+
+        RemoveItemFromInventory("Apple", 3);
+        RemoveItemFromInventory("Banana", 6);
+
+        DisplayInventory();
     }
 }
