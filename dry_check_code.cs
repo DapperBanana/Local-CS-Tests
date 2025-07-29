@@ -1,47 +1,67 @@
 
 using System;
-using System.Xml;
 
-class Program
+class MagicTorusChecker
 {
+    static bool IsMagicTorus(int[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        
+        // Check if all rows have the same sum
+        int sum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            int rowSum = 0;
+            for (int j = 0; j < n; j++)
+            {
+                rowSum += matrix[i, j];
+            }
+            
+            if (i == 0)
+            {
+                sum = rowSum;
+            }
+            else if (rowSum != sum)
+            {
+                return false;
+            }
+        }
+        
+        // Check if all columns have the same sum
+        for (int j = 0; j < n; j++)
+        {
+            int colSum = 0;
+            for (int i = 0; i < n; i++)
+            {
+                colSum += matrix[i, j];
+            }
+            
+            if (colSum != sum)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     static void Main()
     {
-        string xml = @"<?xml version='1.0'?>
-                        <!DOCTYPE note [
-                            <!ELEMENT note (to,from,heading,body)>
-                            <!ELEMENT to (#PCDATA)>
-                            <!ELEMENT from (#PCDATA)>
-                            <!ELEMENT heading (#PCDATA)>
-                            <!ELEMENT body (#PCDATA)>
-                        ]>
-                        <note>
-                            <to>Tove</to>
-                            <from>Jani</from>
-                            <heading>Reminder</heading>
-                            <body>Don't forget me this weekend!</body>
-                        </note>";
+        int[,] matrix = {
+            {4, 9, 2},
+            {3, 5, 7},
+            {8, 1, 6}
+        };
         
-        bool isValid = IsValidXmlWithDtd(xml);
-        Console.WriteLine($"Is Valid XML with DTD: {isValid}");
-    }
-
-    static bool IsValidXmlWithDtd(string xml)
-    {
-        try
+        bool isMagicTorus = IsMagicTorus(matrix);
+        
+        if (isMagicTorus)
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.DtdProcessing = DtdProcessing.Prohibit;
-            
-            using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xml), settings))
-            {
-                while (reader.Read()) { }
-            }
-
-            return true;
+            Console.WriteLine("The given matrix is a magic torus.");
         }
-        catch (XmlException)
+        else
         {
-            return false;
+            Console.WriteLine("The given matrix is not a magic torus.");
         }
     }
 }
