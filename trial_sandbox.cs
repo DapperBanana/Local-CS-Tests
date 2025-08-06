@@ -1,45 +1,33 @@
 
 using System;
+using System.Diagnostics;
 
-class Program
+namespace RandomWalkPlot
 {
-    static void Main()
+    class Program
     {
-        Console.WriteLine("Welcome to the Personality Quiz!");
-        Console.WriteLine("Answer the following questions:");
-        
-        int score = 0;
-        
-        Console.WriteLine("1. Are you more introverted or extroverted?");
-        string answer1 = Console.ReadLine();
-        if(answer1.ToLower() == "introverted")
+        static void Main(string[] args)
         {
-            score++;
-        }
-        
-        Console.WriteLine("2. Do you prefer to plan things out or go with the flow?");
-        string answer2 = Console.ReadLine();
-        if(answer2.ToLower() == "plan things out")
-        {
-            score++;
-        }
-        
-        Console.WriteLine("3. Are you more analytical or creative?");
-        string answer3 = Console.ReadLine();
-        if(answer3.ToLower() == "analytical")
-        {
-            score++;
-        }
-        
-        Console.WriteLine("Your personality type is:");
-        
-        if(score >= 2)
-        {
-            Console.WriteLine("You are a logical and introverted person.");
-        }
-        else
-        {
-            Console.WriteLine("You are a creative and extroverted person.");
+            string python = @"C:\Python39\python.exe";
+            string script = @"path\to\your\python\script.py";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = python,
+                Arguments = script,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(startInfo))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    Console.WriteLine(result);
+                }
+            }
         }
     }
 }
