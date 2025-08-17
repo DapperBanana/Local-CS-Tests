@@ -1,54 +1,42 @@
 
 using System;
 
-class SudokuValidator
+class AnagramChecker
 {
-    static bool IsValidSudoku(int[,] board)
+    static bool IsAnagram(string str1, string str2)
     {
-        HashSet<string> set = new HashSet<string>();
-
-        for (int i = 0; i < 9; i++)
+        if (str1.Length != str2.Length)
         {
-            for (int j = 0; j < 9; j++)
-            {
-                if (board[i, j] != 0)
-                {
-                    string rowValue = $"row{board[i, j]} in row {i}";
-                    string colValue = $"col{board[i, j]} in col {j}";
-                    string boxValue = $"box{board[i, j]} in box {(i/3)*3 + j/3}";
-
-                    if (!set.Add(rowValue) || !set.Add(colValue) || !set.Add(boxValue))
-                    {
-                        return false;
-                    }
-                }
-            }
+            return false;
         }
 
-        return true;
+        char[] charArray1 = str1.ToLower().ToCharArray();
+        char[] charArray2 = str2.ToLower().ToCharArray();
+
+        Array.Sort(charArray1);
+        Array.Sort(charArray2);
+
+        string sortedStr1 = new string(charArray1);
+        string sortedStr2 = new string(charArray2);
+
+        return string.Equals(sortedStr1, sortedStr2);
     }
 
-    static void Main(string[] args)
+    static void Main()
     {
-        int[,] sudoku = new int[,] {
-            {5, 3, 0, 0, 7, 0, 0, 0, 0},
-            {6, 0, 0, 1, 9, 5, 0, 0, 0},
-            {0, 9, 8, 0, 0, 0, 0, 6, 0},
-            {8, 0, 0, 0, 6, 0, 0, 0, 3},
-            {4, 0, 0, 8, 0, 3, 0, 0, 1},
-            {7, 0, 0, 0, 2, 0, 0, 0, 6},
-            {0, 6, 0, 0, 0, 0, 2, 8, 0},
-            {0, 0, 0, 4, 1, 9, 0, 0, 5},
-            {0, 0, 0, 0, 8, 0, 0, 7, 9}
-        };
+        Console.WriteLine("Enter the first string:");
+        string str1 = Console.ReadLine();
 
-        if (IsValidSudoku(sudoku))
+        Console.WriteLine("Enter the second string:");
+        string str2 = Console.ReadLine();
+
+        if (IsAnagram(str1, str2))
         {
-            Console.WriteLine("Valid Sudoku solution");
+            Console.WriteLine("The strings are anagrams.");
         }
         else
         {
-            Console.WriteLine("Invalid Sudoku solution");
+            Console.WriteLine("The strings are not anagrams.");
         }
     }
 }
