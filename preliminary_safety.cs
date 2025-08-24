@@ -1,32 +1,28 @@
 
 using System;
+using System.Text.RegularExpressions;
 
-class AreaCalculator
+class Program
 {
     static void Main()
     {
-        double base1, base2, height, depth, area;
+        string email = "example@domain.com";
 
-        // Input values
-        Console.WriteLine("Enter the length of the first base of the trapezoid: ");
-        base1 = double.Parse(Console.ReadLine());
+        if (IsValidEmail(email))
+        {
+            Console.WriteLine(email + " is a valid email address.");
+        }
+        else
+        {
+            Console.WriteLine(email + " is not a valid email address.");
+        }
+    }
 
-        Console.WriteLine("Enter the length of the second base of the trapezoid: ");
-        base2 = double.Parse(Console.ReadLine());
+    static bool IsValidEmail(string email)
+    {
+        string pattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        Regex regex = new Regex(pattern);
 
-        Console.WriteLine("Enter the height of the trapezoid: ");
-        height = double.Parse(Console.ReadLine());
-
-        Console.WriteLine("Enter the depth of the prism: ");
-        depth = double.Parse(Console.ReadLine());
-
-        // Calculate area of trapezoid
-        double trapezoidArea = 0.5 * (base1 + base2) * height;
-        
-        // Calculate area of trapezoidal prism
-        area = trapezoidArea * depth;
-
-        // Output the result
-        Console.WriteLine($"The area of the trapezoidal prism is: {area}");
+        return regex.IsMatch(email);
     }
 }
