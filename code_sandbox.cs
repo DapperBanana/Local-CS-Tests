@@ -1,31 +1,43 @@
 
 using System;
-using System.IO;
 
-class Program
+class MatrixInvertibilityChecker
 {
-    static void Main()
+    public static void Main()
     {
-        // Read the file path from the user
-        Console.Write("Enter the file path: ");
-        string filePath = Console.ReadLine();
+        int[][] matrix = {
+            new int[] {1, 2},
+            new int[] {3, 4}
+        };
 
-        // Read the word to find and replace from the user
-        Console.Write("Enter the word to find and replace: ");
-        string wordToFind = Console.ReadLine();
+        Console.WriteLine("Matrix:");
+        PrintMatrix(matrix);
 
-        Console.Write("Enter the word to replace with: ");
-        string wordToReplace = Console.ReadLine();
+        if (IsInvertible(matrix))
+        {
+            Console.WriteLine("The matrix is invertible.");
+        }
+        else
+        {
+            Console.WriteLine("The matrix is not invertible.");
+        }
+    }
 
-        // Read the content of the file
-        string content = File.ReadAllText(filePath);
+    public static void PrintMatrix(int[][] matrix)
+    {
+        foreach (var row in matrix)
+        {
+            foreach (var num in row)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine();
+        }
+    }
 
-        // Replace the word in the content
-        content = content.Replace(wordToFind, wordToReplace);
-
-        // Write the modified content back to the file
-        File.WriteAllText(filePath, content);
-
-        Console.WriteLine("Word replaced successfully.");
+    public static bool IsInvertible(int[][] matrix)
+    {
+        int det = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        return det != 0;
     }
 }
