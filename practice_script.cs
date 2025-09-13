@@ -1,41 +1,32 @@
 
 using System;
+using System.IO;
 
 class Program
 {
-    static bool IsPrime(int num)
-    {
-        if (num <= 1)
-            return false;
-
-        for (int i = 2; i <= Math.Sqrt(num); i++)
-        {
-            if (num % i == 0)
-                return false;
-        }
-
-        return true;
-    }
-
-    static int NextPrime(int num)
-    {
-        num++;
-
-        while (!IsPrime(num))
-        {
-            num++;
-        }
-
-        return num;
-    }
-
     static void Main()
     {
-        Console.Write("Enter a number: ");
-        int input = int.Parse(Console.ReadLine());
+        try
+        {
+            string filePath = "data.csv";
 
-        int nextPrime = NextPrime(input);
-
-        Console.WriteLine($"The smallest prime number greater than {input} is {nextPrime}");
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] values = line.Split(',');
+                    foreach (string value in values)
+                    {
+                        Console.Write(value + "\t");
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
     }
 }
