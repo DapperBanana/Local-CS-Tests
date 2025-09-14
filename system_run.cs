@@ -1,35 +1,33 @@
 
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        string pdfFilePath = @"C:\example.pdf";
+        List<int> numbers = new List<int> { 10, 20, 30, 40, 50 };
 
-        using (PdfDocument document = PdfReader.Open(pdfFilePath, PdfDocumentOpenMode.Import))
-        {
-            for (int pageNumber = 0; pageNumber < document.PageCount; pageNumber++)
-            {
-                PdfPage page = document.Pages[pageNumber];
-                string pageText = ExtractTextFromPage(page);
-                Console.WriteLine(pageText);
-            }
-        }
+        double median = CalculateMedian(numbers);
+
+        Console.WriteLine("Median: " + median);
     }
 
-    static string ExtractTextFromPage(PdfPage page)
+    static double CalculateMedian(List<int> numbers)
     {
-        PdfSharp.Pdf.Advanced.PdfContentReader contentReader = new PdfSharp.Pdf.Advanced.PdfContentReader(page);
-        string pageText = string.Empty;
+        numbers.Sort();
 
-        while (contentReader.ReadNextChar() > 0)
+        int count = numbers.Count;
+        int mid = count / 2;
+
+        if (count % 2 == 0)
         {
-            pageText += contentReader.Char;
+            return (numbers[mid - 1] + numbers[mid]) / 2.0;
         }
-
-        return pageText;
+        else
+        {
+            return numbers[mid];
+        }
     }
 }
