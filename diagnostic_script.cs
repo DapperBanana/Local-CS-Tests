@@ -1,50 +1,35 @@
 
 using System;
-using System.IO;
-using System.IO.Compression;
+using System.Xml;
 
 class Program
 {
     static void Main()
     {
-        string inputFile = "input.txt";
-        string compressedFile = "compressed.gz";
-        string decompressedFile = "decompressed.txt";
-
-        Console.WriteLine("Compressing file...");
-        CompressFile(inputFile, compressedFile);
-
-        Console.WriteLine("Decompressing file...");
-        DecompressFile(compressedFile, decompressedFile);
-
-        Console.WriteLine("File compression and decompression completed successfully.");
-    }
-
-    static void CompressFile(string inputFile, string compressedFile)
-    {
-        using (FileStream inputStream = new FileStream(inputFile, FileMode.Open))
+        string xmlString = "<!DOCTYPE note [<!ELEMENT note (to,from,heading,body)>]><note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>";
+        
+        if (IsValidXmlWithDtd(xmlString))
         {
-            using (FileStream compressedFileStream = File.Create(compressedFile))
-            {
-                using (GZipStream compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
-                {
-                    inputStream.CopyTo(compressionStream);
-                }
-            }
+            Console.WriteLine("The given string is a valid XML document with a DTD.");
+        }
+        else
+        {
+            Console.WriteLine("The given string is not a valid XML document with a DTD.");
         }
     }
 
-    static void DecompressFile(string compressedFile, string decompressedFile)
+    static bool IsValidXmlWithDtd(string xmlString)
     {
-        using (FileStream compressedFileStream = new FileStream(compressedFile, FileMode.Open))
+        try
         {
-            using (FileStream decompressedFileStream = File.Create(decompressedFile))
-            {
-                using (GZipStream decompressionStream = new GZipStream(compressedFileStream, CompressionMode.Decompress))
-                {
-                    decompressionStream.CopyTo(decompressedFileStream);
-                }
-            }
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.XmlResolver = null; // Disable DTD processing
+            xmlDoc.LoadXml(xmlString);
+            return true;
+        }
+        catch (XmlException)
+        {
+            return false;
         }
     }
 }
