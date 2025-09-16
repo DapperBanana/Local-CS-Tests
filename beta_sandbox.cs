@@ -1,33 +1,32 @@
 
 using System;
-using System.Text.RegularExpressions;
 
-class Program
+class CrosswordPuzzle
 {
     static void Main()
     {
-        string jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        Random random = new Random();
 
-        if (IsValidJWT(jwt))
-        {
-            Console.WriteLine("The provided string is a valid JSON Web Token (JWT).");
-        }
-        else
-        {
-            Console.WriteLine("The provided string is not a valid JSON Web Token (JWT).");
-        }
-    }
+        // Create a grid for the crossword puzzle
+        char[,] puzzleGrid = new char[10, 10];
 
-    static bool IsValidJWT(string jwt)
-    {
-        // Regular expression pattern for JWT validation
-        string pattern = @"^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_=]+$";
-
-        if (Regex.IsMatch(jwt, pattern))
+        // Generate random letters for the grid
+        for (int i = 0; i < puzzleGrid.GetLength(0); i++)
         {
-            return true;
+            for (int j = 0; j < puzzleGrid.GetLength(1); j++)
+            {
+                puzzleGrid[i, j] = (char)random.Next('A', 'Z' + 1);
+            }
         }
 
-        return false;
+        // Display the crossword puzzle grid
+        for (int i = 0; i < puzzleGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < puzzleGrid.GetLength(1); j++)
+            {
+                Console.Write(puzzleGrid[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
     }
 }
