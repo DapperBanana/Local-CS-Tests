@@ -5,43 +5,20 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to the Trading Card Game!");
-
-        Console.Write("Enter player 1 name: ");
-        string player1 = Console.ReadLine();
-
-        Console.Write("Enter player 2 name: ");
-        string player2 = Console.ReadLine();
-
-        int player1Health = 20;
-        int player2Health = 20;
-
-        Random random = new Random();
-
-        while (player1Health > 0 && player2Health > 0)
-        {
-            Console.WriteLine($"{player1} - Health: {player1Health}");
-            Console.WriteLine($"{player2} - Health: {player2Health}");
-
-            int player1Damage = random.Next(1, 6);
-            int player2Damage = random.Next(1, 6);
-
-            Console.WriteLine($"{player1} deals {player1Damage} damage to {player2}");
-            player2Health -= player1Damage;
-
-            Console.WriteLine($"{player2} deals {player2Damage} damage to {player1}");
-            player1Health -= player2Damage;
-
-            Console.WriteLine();
-        }
-
-        if (player1Health <= 0)
-        {
-            Console.WriteLine($"{player2} wins!");
-        }
-        else
-        {
-            Console.WriteLine($"{player1} wins!");
-        }
+        double sideLength, height;
+        
+        Console.WriteLine("Enter the side length of the pentagon: ");
+        sideLength = double.Parse(Console.ReadLine());
+        
+        Console.WriteLine("Enter the height of the prism: ");
+        height = double.Parse(Console.ReadLine());
+        
+        double perimeter = 5 * sideLength;
+        double apothem = sideLength / (2 * Math.Tan(Math.PI / 5));
+        double baseArea = 0.5 * perimeter * apothem;
+        double lateralArea = perimeter * height;
+        double totalArea = 2 * baseArea + lateralArea;
+        
+        Console.WriteLine("The area of the regular pentagonal prism is: " + totalArea);
     }
 }
