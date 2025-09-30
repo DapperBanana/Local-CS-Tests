@@ -1,17 +1,20 @@
 
 using System;
 
-class Program
+class LeapYearChecker
 {
     static void Main()
     {
-        double sideLength, area;
+        Console.WriteLine("Enter a year to check if it's a leap year: ");
+        int year = Convert.ToInt32(Console.ReadLine());
 
-        Console.WriteLine("Enter the side length of the regular hexadecagon: ");
-        sideLength = Convert.ToDouble(Console.ReadLine());
-
-        area = 4 * sideLength * sideLength * Math.Tan(Math.PI / 16);
-
-        Console.WriteLine("The area of the regular hexadecagon is: " + area);
+        if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+        {
+            Console.WriteLine(year + " is a leap year.");
+        }
+        else
+        {
+            Console.WriteLine(year + " is not a leap year.");
+        }
     }
 }
