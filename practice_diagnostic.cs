@@ -1,59 +1,40 @@
 
 using System;
 
-class HangmanGame
+class WeatherForecast
 {
     static void Main()
     {
-        string[] words = { "computer", "programming", "hangman", "software", "debugging" };
-
         Random random = new Random();
-        string wordToGuess = words[random.Next(words.Length)];
-        char[] guess = new char[wordToGuess.Length];
+        int temperature = random.Next(-10, 40);
+        int humidity = random.Next(0, 100);
+        int windSpeed = random.Next(0, 50);
 
-        for (int i = 0; i < guess.Length; i++)
+        Console.WriteLine("Weather Forecast:");
+        Console.WriteLine("-----------------");
+        Console.WriteLine("Temperature: " + temperature + "°C");
+        Console.WriteLine("Humidity: " + humidity + "%");
+        Console.WriteLine("Wind Speed: " + windSpeed + " km/h");
+
+        if (temperature <= 0)
         {
-            guess[i] = '_';
+            Console.WriteLine("It's freezing cold outside. Bundle up!");
         }
-
-        int attempts = 10;
-        bool wordGuessed = false;
-
-        while (attempts > 0 && !wordGuessed)
+        else if (temperature > 0 && temperature < 10)
         {
-            Console.WriteLine("Word to guess: " + String.Join(" ", guess));
-            Console.WriteLine("Attempts left: " + attempts);
-
-            Console.Write("Enter a letter to guess: ");
-            char letter = Char.ToLower(Console.ReadKey().KeyChar);
-            Console.WriteLine();
-
-            bool foundLetter = false;
-
-            for (int i = 0; i < wordToGuess.Length; i++)
-            {
-                if (wordToGuess[i] == letter)
-                {
-                    guess[i] = letter;
-                    foundLetter = true;
-                }
-            }
-
-            if (!foundLetter)
-            {
-                attempts--;
-            }
-
-            if (new string(guess) == wordToGuess)
-            {
-                wordGuessed = true;
-                Console.WriteLine("Congratulations! You guessed the word: " + wordToGuess);
-            }
+            Console.WriteLine("It's chilly outside. Wear a jacket.");
         }
-
-        if (!wordGuessed)
+        else if (temperature >= 10 && temperature < 20)
         {
-            Console.WriteLine("Sorry, you ran out of attempts. The word was: " + wordToGuess);
+            Console.WriteLine("It's cool outside. Enjoy the weather!");
+        }
+        else if (temperature >= 20 && temperature < 30)
+        {
+            Console.WriteLine("It's warm outside. Perfect weather!");
+        }
+        else
+        {
+            Console.WriteLine("It's hot outside. Stay hydrated!");
         }
     }
 }
