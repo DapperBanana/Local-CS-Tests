@@ -1,32 +1,54 @@
 
 using System;
-using System.Collections.Generic;
 
-class Program
+class Calculator
 {
     static void Main()
     {
-        string inputString = "hello world";
-        
-        Dictionary<char, int> characterCount = new Dictionary<char, int>();
+        double num1, num2, result;
+        char operation;
 
-        // Count the number of occurrences of each character in the input string
-        foreach (char c in inputString)
-        {
-            if (characterCount.ContainsKey(c))
-            {
-                characterCount[c]++;
-            }
-            else
-            {
-                characterCount[c] = 1;
-            }
-        }
+        Console.WriteLine("Enter first number: ");
+        num1 = Convert.ToDouble(Console.ReadLine());
 
-        // Display the results
-        foreach (var pair in characterCount)
+        Console.WriteLine("Enter operation (+, -, *, /): ");
+        operation = Convert.ToChar(Console.ReadLine());
+
+        Console.WriteLine("Enter second number: ");
+        num2 = Convert.ToDouble(Console.ReadLine());
+
+        switch (operation)
         {
-            Console.WriteLine($"'{pair.Key}': {pair.Value}");
+            case '+':
+                result = num1 + num2;
+                Console.WriteLine("Result: " + result);
+                break;
+
+            case '-':
+                result = num1 - num2;
+                Console.WriteLine("Result: " + result);
+                break;
+
+            case '*':
+                result = num1 * num2;
+                Console.WriteLine("Result: " + result);
+                break;
+
+            case '/':
+                if (num2 != 0)
+                {
+                    result = num1 / num2;
+                    Console.WriteLine("Result: " + result);
+                }
+                else
+                {
+                    Console.WriteLine("Division by zero is not allowed.");
+                }
+                break;
+
+            default:
+                Console.WriteLine("Invalid operation.");
+                break;
         }
     }
 }
