@@ -1,52 +1,32 @@
 
-using NAudio.Wave;
-using NAudio.Dsp;
-using NAudio.Wave.SampleProviders;
 using System;
+using Python.Runtime;
 
-namespace AudioPitchAnalyzer
+namespace PitchAnalysis
 {
     class Program
     {
         static void Main(string[] args)
         {
-            string audioFilePath = "path/to/audio/file.wav";
-
-            using (var audioFile = new AudioFileReader(audioFilePath))
+            using (Py.GIL())
             {
-                var pitchDetector = new PitchDetector();
-                float pitch = pitchDetector.DetectPitch(audioFile);
+                dynamic librosa = Py.Import("librosa");
 
-                Console.WriteLine($"Pitch detected: {pitch} Hz");
+                // Load audio file
+                string audioFilePath = "path/to/audio/file.wav";
+                dynamic y, sr;
+                (y, sr) = librosa.load(audioFilePath, sr=44100);
+
+                // Extract pitch using librosa
+                dynamic pitches, magnitudes;
+                (pitches, magnitudes) = librosa.piptrack(y=y, sr=sr);
+
+                // Get the pitch with the highest magnitude
+                int maxIndex = librosa.util.find_max(pitches, axis=0);
+                float maxPitch = pitches[maxIndex];
+
+                Console.WriteLine("Estimated pitch: " + maxPitch);
             }
-        }
-    }
-
-    public class PitchDetector
-    {
-        public float DetectPitch(AudioFileReader audioFile)
-        {
-            const int sampleRate = 44100;
-            int bufferSize = 4096;
-
-            var pitchCalculator = new PitchShiftingSampleProvider(audioFile);
-            pitchCalculator.PitchFactor = 1.0f; // no pitch shift
-
-            float[] buffer = new float[bufferSize];
-            int bytesRead;
-
-            do
-            {
-                bytesRead = pitchCalculator.Read(buffer, 0, bufferSize);
-                if (bytesRead > 0)
-                {
-                    // analyze audio data in buffer for pitch
-                    // perform pitch detection algorithm here
-                }
-            } while (bytesRead > 0);
-
-            // dummy pitch value for demonstration purposes
-            return 440.0f;
         }
     }
 }
