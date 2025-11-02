@@ -1,0 +1,29 @@
+
+using System;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        string input = "https://www.example.com";
+        
+        if (IsValidUrl(input))
+        {
+            Console.WriteLine("The input is a valid URL.");
+        }
+        else
+        {
+            Console.WriteLine("The input is not a valid URL.");
+        }
+    }
+
+    static bool IsValidUrl(string url)
+    {
+        // Regular expression pattern for a valid URL
+        string pattern = @"^(http(s)?:\/\/)?([\w-]+\.)+[\w-]+[.com|.net|.org|.gov]+$";
+        
+        Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+        return regex.IsMatch(url);
+    }
+}
