@@ -1,39 +1,20 @@
 
 using System;
-using librosa; // Import the librosa library
 
 class Program
 {
     static void Main()
     {
-        // Load audio file
-        string audioFile = "example_audio.wav";
-        float[] audioData = librosa.core.load(audioFile, sr: 22050, mono: true);
+        // Get the side length of the decagon from the user
+        Console.Write("Enter the side length of the regular decagon: ");
+        double sideLength = Convert.ToDouble(Console.ReadLine());
 
-        // Get pitch using librosa
-        float[] pitchData = librosa.core.piptrack(y: audioData, sr: 22050);
+        // Calculate the apothem of the decagon
+        double apothem = sideLength / (2 * Math.Tan(Math.PI / 10));
 
-        // Find the dominant pitch
-        float dominantPitch = FindDominantPitch(pitchData);
+        // Calculate the area of the regular decagon
+        double area = (5 * sideLength * apothem);
 
-        Console.WriteLine($"Dominant pitch: {dominantPitch} Hz");
-    }
-
-    static float FindDominantPitch(float[] pitchData)
-    {
-        float[] meanPitch = librosa.core.mean(pitchData, axis: 0);
-        int maxIndex = 0;
-        float maxVal = 0;
-
-        for (int i = 0; i < meanPitch.Length; i++)
-        {
-            if (meanPitch[i] > maxVal)
-            {
-                maxIndex = i;
-                maxVal = meanPitch[i];
-            }
-        }
-
-        return maxIndex;
+        Console.WriteLine($"The area of the regular decagon is: {area}");
     }
 }
