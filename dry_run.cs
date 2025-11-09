@@ -1,54 +1,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
-    static List<int> MergeSortedLists(List<int> list1, List<int> list2)
-    {
-        List<int> mergedList = new List<int>();
-        int i = 0, j = 0;
-
-        while (i < list1.Count && j < list2.Count)
-        {
-            if (list1[i] < list2[j])
-            {
-                mergedList.Add(list1[i]);
-                i++;
-            }
-            else
-            {
-                mergedList.Add(list2[j]);
-                j++;
-            }
-        }
-
-        while (i < list1.Count)
-        {
-            mergedList.Add(list1[i]);
-            i++;
-        }
-
-        while (j < list2.Count)
-        {
-            mergedList.Add(list2[j]);
-            j++;
-        }
-
-        return mergedList;
-    }
-
     static void Main()
     {
-        List<int> list1 = new List<int> { 1, 3, 5, 7, 9 };
-        List<int> list2 = new List<int> { 2, 4, 6, 8, 10 };
+        List<int> list1 = new List<int> { 1, 2, 3, 4, 5 };
+        List<int> list2 = new List<int> { 3, 4, 5, 6, 7 };
 
-        List<int> mergedList = MergeSortedLists(list1, list2);
+        var intersection = list1.Intersect(list2);
 
-        Console.WriteLine("Merged list:");
-        foreach (int num in mergedList)
+        Console.WriteLine("Intersection of List1 and List2:");
+        foreach (var num in intersection)
         {
-            Console.Write(num + " ");
+            Console.WriteLine(num);
         }
     }
 }
