@@ -1,69 +1,51 @@
 
 using System;
-using System.IO;
 
 class Program
 {
     static void Main()
     {
-        string inputFile = "input.txt";
-        string compressedFile = "compressed.txt";
-        string decompressedFile = "decompressed.txt";
+        int[,] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
 
-        Console.WriteLine("Compressing file...");
-        CompressFile(inputFile, compressedFile);
-        Console.WriteLine("File compressed successfully.");
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
 
-        Console.WriteLine("Decompressing file...");
-        DecompressFile(compressedFile, decompressedFile);
-        Console.WriteLine("File decompressed successfully.");
-    }
+        int[,] reversedMatrix = new int[cols, rows];
 
-    static void CompressFile(string inputFilePath, string outputFilePath)
-    {
-        using (StreamReader reader = new StreamReader(inputFilePath))
-        using (StreamWriter writer = new StreamWriter(outputFilePath))
+        // Reverse the rows and columns
+        for (int i = 0; i < rows; i++)
         {
-            char currentChar = (char)reader.Read();
-            int count = 1;
-
-            while (!reader.EndOfStream)
+            for (int j = 0; j < cols; j++)
             {
-                char nextChar = (char)reader.Read();
-
-                if (nextChar == currentChar)
-                {
-                    count++;
-                }
-                else
-                {
-                    writer.Write(count);
-                    writer.Write(currentChar);
-                    currentChar = nextChar;
-                    count = 1;
-                }
+                reversedMatrix[j, i] = matrix[i, j];
             }
-
-            writer.Write(count);
-            writer.Write(currentChar);
         }
+
+        // Print the original matrix
+        Console.WriteLine("Original Matrix:");
+        PrintMatrix(matrix);
+
+        // Print the reversed matrix
+        Console.WriteLine("\nReversed Matrix:");
+        PrintMatrix(reversedMatrix);
     }
 
-    static void DecompressFile(string inputFilePath, string outputFilePath)
+    static void PrintMatrix(int[,] matrix)
     {
-        using (StreamReader reader = new StreamReader(inputFilePath))
-        using (StreamWriter writer = new StreamWriter(outputFilePath))
-        {
-            while (!reader.EndOfStream)
-            {
-                int count = int.Parse(reader.ReadLine());
-                char character = (char)reader.Read();
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
 
-                for (int i = 0; i < count; i++)
-                {
-                    writer.Write(character);
-                }
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write(matrix[i, j] + " ");
             }
+            Console.WriteLine();
         }
     }
 }
