@@ -1,29 +1,59 @@
 
-using QRCoder;
 using System;
-using System.Drawing;
-using System.IO;
+using System.Threading;
 
-class Program
+class SpaceExplorationGame
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        Console.WriteLine("Enter the text you want to encode in the QR code:");
-        string input = Console.ReadLine();
+        Console.WriteLine("Welcome to the Space Exploration Game!");
+        Console.WriteLine("You are about to embark on a journey to explore the vast unknown of space.");
+        Console.WriteLine("You have limited resources and must make decisions carefully to survive.");
 
-        QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(input, QRCodeGenerator.ECCLevel.Q);
-        QRCode qrCode = new QRCode(qrCodeData);
+        int fuel = 100;
+        int distanceTraveled = 0;
 
-        Bitmap qrCodeImage = qrCode.GetGraphic(20);
+        while (fuel > 0)
+        {
+            Console.WriteLine("\nOptions:");
+            Console.WriteLine("1. Travel to a nearby planet");
+            Console.WriteLine("2. Refuel your spaceship");
+            Console.WriteLine("3. Quit the game");
 
-        Console.WriteLine("QR code generated successfully!");
+            Console.Write("Enter your choice: ");
+            int choice = int.Parse(Console.ReadLine());
 
-        Console.WriteLine("Enter the output file path (e.g. C:\\output.png):");
-        string outputPath = Console.ReadLine();
+            switch (choice)
+            {
+                case 1:
+                    int travelDistance = new Random().Next(10, 21);
+                    Thread.Sleep(2000);
+                    if (fuel < travelDistance)
+                    {
+                        Console.WriteLine("You don't have enough fuel to travel that far. Refuel your spaceship.");
+                    }
+                    else
+                    {
+                        distanceTraveled += travelDistance;
+                        fuel -= travelDistance;
+                        Console.WriteLine($"You traveled to a planet {travelDistance} light years away.");
+                    }
+                    break;
+                case 2:
+                    fuel = 100;
+                    Console.WriteLine("You refueled your spaceship.");
+                    break;
+                case 3:
+                    Console.WriteLine("Thanks for playing! You traveled a total of " + distanceTraveled + " light years.");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    break;
+            }
 
-        qrCodeImage.Save(outputPath, System.Drawing.Imaging.ImageFormat.Png);
+            Console.WriteLine($"You have {fuel} units of fuel left. Total distance traveled: {distanceTraveled} light years.");
+        }
 
-        Console.WriteLine("QR code saved to: " + outputPath);
+        Console.WriteLine("You ran out of fuel and couldn't continue your journey. Game over.");
     }
 }
