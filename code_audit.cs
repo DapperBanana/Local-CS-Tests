@@ -1,31 +1,19 @@
 
 using System;
+using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        string[] strings = { "flower", "flow", "flight" };
-        string commonPrefix = LongestCommonPrefix(strings);
-        
-        Console.WriteLine($"Longest common prefix: {commonPrefix}");
-    }
+        List<int> numbers = new List<int> { 5, 2, 8, 1, 6, 3, 7, 4 };
 
-    static string LongestCommonPrefix(string[] strings)
-    {
-        if (strings.Length == 0) return "";
-        
-        Array.Sort(strings);
-        
-        string first = strings[0];
-        string last = strings[strings.Length - 1];
-        
-        int i = 0;
-        while (i < first.Length && i < last.Length && first[i] == last[i])
+        numbers.Sort();
+
+        Console.WriteLine("Sorted numbers:");
+        foreach (int number in numbers)
         {
-            i++;
+            Console.WriteLine(number);
         }
-        
-        return first.Substring(0, i);
     }
 }
