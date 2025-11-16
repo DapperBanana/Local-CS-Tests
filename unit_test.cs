@@ -1,22 +1,48 @@
 
 using System;
 
-class Program
+class BinarySearchExample
 {
-    static void Main()
+    static int BinarySearch(int[] arr, int target)
     {
-        Console.Write("Enter the length of the password you want to generate: ");
-        int length = Convert.ToInt32(Console.ReadLine());
-        
-        string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-        Random random = new Random();
-        string password = "";
-        
-        for (int i = 0; i < length; i++)
+        int left = 0;
+        int right = arr.Length - 1;
+
+        while (left <= right)
         {
-            password += validChars[random.Next(validChars.Length)];
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target)
+            {
+                return mid;
+            }
+            else if (arr[mid] < target)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
         }
-        
-        Console.WriteLine("Generated password: " + password);
+
+        return -1;
+    }
+
+    public static void Main()
+    {
+        int[] numbers = { 1, 4, 7, 9, 12, 18, 22, 27, 34 };
+        int target = 12;
+
+        int index = BinarySearch(numbers, target);
+
+        if (index != -1)
+        {
+            Console.WriteLine("Element found at index: " + index);
+        }
+        else
+        {
+            Console.WriteLine("Element not found in the list.");
+        }
     }
 }
