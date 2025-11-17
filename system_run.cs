@@ -1,42 +1,61 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-class WeatherForecastingSystem
+class VampireNumberChecker
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to the Weather Forecasting System!");
+        Console.WriteLine("Enter a number to check if it's a vampire number:");
 
-        Console.WriteLine("Enter the current temperature in Fahrenheit:");
-        double temperature = Convert.ToDouble(Console.ReadLine());
+        int number = int.Parse(Console.ReadLine());
 
-        Console.WriteLine("Enter the current weather conditions (sunny, cloudy, rainy, snowy):");
-        string conditions = Console.ReadLine();
-
-        Console.WriteLine("Enter the current wind speed in mph:");
-        double windSpeed = Convert.ToDouble(Console.ReadLine());
-
-        Console.WriteLine("\nWeather Forecast:");
-
-        Console.WriteLine($"Temperature: {temperature}F");
-        Console.WriteLine($"Conditions: {conditions}");
-        Console.WriteLine($"Wind Speed: {windSpeed}mph");
-
-        if (temperature > 80 && conditions.ToLower() == "sunny")
+        if (IsVampireNumber(number))
         {
-            Console.WriteLine("It's a hot and sunny day! Stay hydrated!");
-        }
-        else if (temperature < 50 && conditions.ToLower() == "snowy")
-        {
-            Console.WriteLine("It's cold and snowy! Bundle up!");
-        }
-        else if (windSpeed > 20)
-        {
-            Console.WriteLine("It's windy outside! Hold onto your hats!");
+            Console.WriteLine($"{number} is a vampire number.");
         }
         else
         {
-            Console.WriteLine("Enjoy the weather!");
+            Console.WriteLine($"{number} is not a vampire number.");
         }
+    }
+
+    static bool IsVampireNumber(int number)
+    {
+        string numberString = number.ToString();
+        int numberLength = numberString.Length;
+
+        if (numberLength % 2 != 0)
+        {
+            return false;
+        }
+
+        List<int> digits = numberString.Select(c => int.Parse(c.ToString())).ToList();
+
+        for (int i = 10; i <= Math.Pow(10, numberLength / 2); i++)
+        {
+            if (number % i == 0)
+            {
+                int j = number / i;
+
+                if (IsPermutation(i, j, digits))
+                {
+                    Console.WriteLine($"{i} * {j} = {number}");
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static bool IsPermutation(int i, int j, List<int> digits)
+    {
+        List<int> productDigits = (i.ToString() + j.ToString()).Select(c => int.Parse(c.ToString())).ToList();
+        productDigits.Sort();
+        digits.Sort();
+
+        return productDigits.SequenceEqual(digits);
     }
 }
