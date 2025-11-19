@@ -1,21 +1,45 @@
 
-using Librosa;
+using System;
 
-class Program
+class MatrixMultiplication
 {
     static void Main()
     {
-        // Load audio file
-        string audioFilePath = "example_audio.wav";
-        float[] audioData = AudioUtilities.Load(audioFilePath);
+        int[,] matrix1 = {
+            {1, 2},
+            {3, 4}
+        };
+        
+        int[,] matrix2 = {
+            {5, 6},
+            {7, 8}
+        };
 
-        // Get pitch using librosa library
-        float[] pitches = Pitch.Piptrack(audioData);
+        int rows1 = matrix1.GetLength(0);
+        int columns1 = matrix1.GetLength(1);
+        int columns2 = matrix2.GetLength(1);
 
-        // Print out pitch values
-        foreach(float pitch in pitches)
+        int[,] result = new int[rows1, columns2];
+
+        for (int i = 0; i < rows1; i++)
         {
-            Console.WriteLine("Pitch: " + pitch);
+            for (int j = 0; j < columns2; j++)
+            {
+                for (int k = 0; k < columns1; k++)
+                {
+                    result[i, j] += matrix1[i, k] * matrix2[k, j];
+                }
+            }
+        }
+
+        Console.WriteLine("Resultant Matrix:");
+        for (int i = 0; i < rows1; i++)
+        {
+            for (int j = 0; j < columns2; j++)
+            {
+                Console.Write(result[i, j] + " ");
+            }
+            Console.WriteLine();
         }
     }
 }
